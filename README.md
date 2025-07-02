@@ -17,5 +17,5 @@
 
 Reactor is a high-performance Minecraft server platform developed in Java, designed to redefine the current landscape of Minecraft server software. Emphasizing efficiency, scalability, and modular architecture, Reactor sets a new standard for modern server solutions.
 
-> ![IMPORTANT]
+> [!WARNING]
 > This project is under heavy development! Not all features are done!
