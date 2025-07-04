@@ -107,7 +107,9 @@ public final class SchedulerTest {
         tickScheduler.cancelScheduleTask(secondTaskId);
 
         // Tick 9 (should not execute after cancellation)
-        tickScheduler.tick();
+        for (int i = 0; i < 10; i++) {
+            tickScheduler.tick();
+        }
         Assertions.assertEquals(2, task1.get(), "Task1: Should not execute after cancellation");
         Assertions.assertEquals(3, task2.get(), "Task2: Should not execute after cancellation");
     }
