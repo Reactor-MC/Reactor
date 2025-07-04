@@ -8,13 +8,13 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Listener {
-    /*
-     * If the event is canceled, ignore this fact and run the listener anyway
+    /**
+     * @return if you can run the listener, ignoring whether the event is canceled or not
      */
     boolean ignoreCancelled() default false;
 
-    /*
+    /**
      * The lower the priority, the sooner it will be executed
      */
-    EventPriority priority() default EventPriority.NORMAL;
+    ListenerPriority priority() default ListenerPriority.DEFAULT;
 }
