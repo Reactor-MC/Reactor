@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 public final class LoggerBuilder {
     private final LoggerFactory factory;
 
-    private Logger parent;
     private String prefix, suffix;
     private LoggerFormatter formatter;
 
@@ -19,11 +18,6 @@ public final class LoggerBuilder {
 
     public LoggerBuilder withSuffix(final String suffix) {
         this.suffix = suffix;
-        return this;
-    }
-
-    public LoggerBuilder withParent(final Logger parent) {
-        this.parent = parent;
         return this;
     }
 
