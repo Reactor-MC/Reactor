@@ -3,44 +3,44 @@ package ink.reactor.microkernel.logger;
 import ink.reactor.kernel.logger.Logger;
 import ink.reactor.kernel.logger.LoggerFormatter;
 
-public record WrappedLogger(
-    String suffix,
-    String prefix,
-    Logger logger
-) implements Logger {
+import java.util.Formatter;
+
+public final class PrintlnLogger implements Logger {
+    private final JavaLoggerFormatter loggerFormatter = new JavaLoggerFormatter(new Formatter());
 
     @Override
     public LoggerFormatter getLoggerFormatter() {
-        return logger.getLoggerFormatter();
+        return loggerFormatter;
     }
 
     @Override
     public void debug(final String message) {
-        logger.debug(prefix + message + suffix);
+        System.out.println("[DEBUG]" + message);
     }
 
     @Override
     public void log(final String message) {
-        logger.log(prefix + message + suffix);
+        System.out.println("[LOG]" + message);
     }
 
     @Override
     public void info(final String message) {
-        logger.info(prefix + message + suffix);
+        System.out.println("[INFO]" + message);
     }
 
     @Override
     public void warn(final String message) {
-        logger.warn(prefix + message + suffix);
+        System.out.println("[WARN]" + message);
     }
 
     @Override
     public void error(final String message) {
-        logger.error(prefix + message + suffix);
+        System.out.println("[ERROR]" + message);
     }
 
     @Override
     public void error(final String message, final Throwable throwable) {
-        logger.error(prefix + message + suffix, throwable);
+        System.out.println("[ERROR]" + message);
+        throwable.printStackTrace();
     }
 }

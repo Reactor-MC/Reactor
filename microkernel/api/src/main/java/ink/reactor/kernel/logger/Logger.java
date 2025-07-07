@@ -3,12 +3,16 @@ package ink.reactor.kernel.logger;
 public interface Logger {
     LoggerFormatter getLoggerFormatter();
 
+    void debug(final String message);
     void log(final String message);
     void info(final String message);
     void warn(final String message);
     void error(final String message);
     void error(final String message, final Throwable throwable);
 
+    default void debug(final String message, Object... toFormat) {
+        debug(getLoggerFormatter().format(message, toFormat));
+    }
     default void log(final String message, Object... toFormat) {
         log(getLoggerFormatter().format(message, toFormat));
     }

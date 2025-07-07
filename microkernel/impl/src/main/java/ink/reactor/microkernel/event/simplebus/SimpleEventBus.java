@@ -1,8 +1,8 @@
-package ink.reactor.microkernel.event;
+package ink.reactor.microkernel.event.simplebus;
 
 import ink.reactor.kernel.event.EventBus;
 import ink.reactor.kernel.event.EventExecutor;
-import ink.reactor.kernel.event.ListenerPriority;
+import ink.reactor.kernel.event.ListenerPhase;
 import ink.reactor.microkernel.event.executor.ListenerConsumerExecutor;
 import ink.reactor.microkernel.event.loader.MethodListenerLoader;
 import lombok.RequiredArgsConstructor;
@@ -35,12 +35,10 @@ public final class SimpleEventBus implements EventBus {
         }
         final Collection<RegisteredListener> listeners = owners.computeIfAbsent(listener, _ -> new ArrayList<>(methodListeners.size()));
 
-        for (MethodListenerLoader.MethodListener(
-            Class<?> eventClass, ListenerPriority priority, EventExecutor executor
-        ) : methodListeners) {
-
+        for (MethodListenerLoader.MethodListener methodListener : methodListeners) {
+            final Class<?> eventClass = methodListener.eventClass();
             EventStorage storage = eventsStorage.get(eventClass);
-            final RegisteredListener registeredListener = new RegisteredListener(executor, eventClass, priority);
+            final RegisteredListener registeredListener = new RegisteredListener(methodListener.executor(), eventClass, methodListener.phase(), methodListener.priority());
 
             if (storage == null) {
                 storage = new EventStorage();
@@ -54,11 +52,11 @@ public final class SimpleEventBus implements EventBus {
 
     @Override
     public <T> void register(final Class<T> eventClass, final Consumer<T> listener) {
-        register(listener, eventClass, ListenerPriority.DEFAULT, new ListenerConsumerExecutor<>(listener));
+        register(listener, eventClass, ListenerPhase.DEFAULT, new ListenerConsumerExecutor<>(listener));
     }
 
     @Override
-    public void register(final Object listener, final Class<?> eventClass, final ListenerPriority priority, final EventExecutor executor) {
+    public void register(final Object listener, final Class<?> eventClass, final ListenerPhase phase, final EventExecutor executor) {
         EventStorage storage = eventsStorage.get(eventClass);
         if (storage == null) {
             storage = new EventStorage();
@@ -66,7 +64,7 @@ public final class SimpleEventBus implements EventBus {
         }
 
         final Collection<RegisteredListener> listeners = owners.computeIfAbsent(listener, _ -> new ArrayList<>(1));
-        final RegisteredListener registeredListener = new RegisteredListener(executor, eventClass, priority);
+        final RegisteredListener registeredListener = new RegisteredListener(executor, eventClass, phase, 0);
 
         listeners.add(registeredListener);
         storage.addListener(registeredListener);

@@ -8,7 +8,7 @@ import ink.reactor.kernel.logger.Logger;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public final class ListenerReflectionExecutor implements EventExecutor {
+public final class ListenerMethodHandleExecutor implements EventExecutor {
 
     private final Logger logger;
     private final Object listener;

@@ -14,7 +14,14 @@ public @interface Listener {
     boolean ignoreCancelled() default false;
 
     /**
-     * The lower the priority, the sooner it will be executed
+     * Highest priority = Runs before
+     * Low priority = Runs after
+     * @return execution priority
      */
-    ListenerPriority priority() default ListenerPriority.DEFAULT;
+    int priority() default 0;
+
+    /**
+     * The lower the phase, the sooner it will be executed
+     */
+    ListenerPhase phase() default ListenerPhase.DEFAULT;
 }

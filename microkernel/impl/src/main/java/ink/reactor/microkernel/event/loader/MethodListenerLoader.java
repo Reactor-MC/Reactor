@@ -2,9 +2,9 @@ package ink.reactor.microkernel.event.loader;
 
 import ink.reactor.kernel.event.EventExecutor;
 import ink.reactor.kernel.event.Listener;
-import ink.reactor.kernel.event.ListenerPriority;
+import ink.reactor.kernel.event.ListenerPhase;
 import ink.reactor.kernel.logger.Logger;
-import ink.reactor.microkernel.event.executor.ListenerReflectionExecutor;
+import ink.reactor.microkernel.event.executor.ListenerMethodHandleExecutor;
 import lombok.RequiredArgsConstructor;
 
 import java.lang.invoke.MethodHandle;
@@ -50,8 +50,9 @@ public final class MethodListenerLoader {
 
             listeners.add(new MethodListener(
                 firstParameter,
+                listener.phase(),
                 listener.priority(),
-                new ListenerReflectionExecutor(logger, object, listener.ignoreCancelled(), methodHandle)));
+                new ListenerMethodHandleExecutor(logger, object, listener.ignoreCancelled(), methodHandle)));
         }
 
         return listeners;
@@ -59,7 +60,8 @@ public final class MethodListenerLoader {
 
     public record MethodListener(
         Class<?> eventClass,
-        ListenerPriority priority,
+        ListenerPhase phase,
+        int priority,
         EventExecutor executor
     ){}
 }
