@@ -1,6 +1,5 @@
 plugins {
     java
-    id("io.freefair.lombok") version "8.14"
 }
 
 group = "ink.reactor"
@@ -8,13 +7,18 @@ version = "1.0.0"
 
 subprojects {
     apply(plugin = "java")
-    apply(plugin = "io.freefair.lombok")
 
     repositories {
         mavenCentral()
     }
 
     dependencies {
+        compileOnly("org.projectlombok:lombok:1.18.38")
+        annotationProcessor("org.projectlombok:lombok:1.18.38")
+
+        testCompileOnly("org.projectlombok:lombok:1.18.38")
+        testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
+
         testImplementation(platform("org.junit:junit-bom:5.10.0"))
         testImplementation("org.junit.jupiter:junit-jupiter")
     }
