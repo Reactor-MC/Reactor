@@ -1,7 +1,4 @@
-rootProject.name = "reactor"
-
-include("launcher:panel")
-include("launcher:minimal")
+rootProject.name = "Reactor"
 
 include("microkernel:api")
 include("microkernel:impl")
