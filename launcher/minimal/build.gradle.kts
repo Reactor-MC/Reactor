@@ -5,6 +5,8 @@ plugins {
 dependencies {
     implementation(project(":protocol:api"))
     implementation(project(":protocol:netty-adapter"))
+    implementation(project(":protocol:bridge:common"))
+    implementation(project(":protocol:bridge:v1.21"))
 
     implementation(project(":microkernel:api"))
     implementation(project(":microkernel:impl"))

@@ -1,8 +1,11 @@
 package ink.reactor.launcher.network;
 
+import ink.reactor.bridge.protocol.v1_21.BridgeV1_21;
 import ink.reactor.kernel.event.EventBus;
 import ink.reactor.kernel.event.common.StopEvent;
 import ink.reactor.kernel.logger.Logger;
+import ink.reactor.protocol.api.Protocol;
+import ink.reactor.protocol.bridge.common.ReactorProtocol;
 import ink.reactor.protocol.netty.NettyConfig;
 import ink.reactor.protocol.netty.ServerConnection;
 import ink.reactor.sdk.config.ConfigSection;
@@ -58,6 +61,9 @@ public final class NetworkLoader {
         ));
 
         eventBus.register(StopEvent.class, (_) -> serverConnection.shutdown());
+
+        Protocol.setInstance(new ReactorProtocol());
+        BridgeV1_21.register();
 
         logger.info("Listening in: " + host + ":" + port);
     }

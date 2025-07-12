@@ -51,6 +51,16 @@ public final class NettyPlayerConnection extends SimpleChannelInboundHandler<Inb
     }
 
     @Override
+    public ProtocolBridge getProtocol() {
+        return null;
+    }
+
+    @Override
+    public ConnectionState getState() {
+        return connectionState;
+    }
+
+    @Override
     public void channelActive(final ChannelHandlerContext ctx) {
         playerConnections.add(this);
         Reactor.getServer().logger().info("Player connected");

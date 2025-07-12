@@ -41,8 +41,8 @@ bin/
 ### Reactor ###
 logs
 /config.yml
-/data-parser/src/main/java/ink/reactor/output
-/data-parser/src/main/resources/combiner/input
-/data-parser/src/main/resources/combiner/output
+/tools/code-generator/src/main/java/ink/reactor/output
+/tools/code-generator/src/main/resources/combiner/input
+/tools/code-generator/src/main/resources/combiner/output
 logger.yml
 network.yml
