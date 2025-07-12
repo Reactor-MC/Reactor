@@ -3,10 +3,8 @@ package ink.reactor.microkernel.logger;
 import ink.reactor.kernel.logger.Logger;
 import ink.reactor.kernel.logger.LoggerFormatter;
 
-import java.util.Formatter;
-
 public final class PrintlnLogger implements Logger {
-    private final JavaLoggerFormatter loggerFormatter = new JavaLoggerFormatter(new Formatter());
+    private final JavaLoggerFormatter loggerFormatter = new JavaLoggerFormatter();
 
     @Override
     public LoggerFormatter getLoggerFormatter() {
@@ -40,7 +38,7 @@ public final class PrintlnLogger implements Logger {
 
     @Override
     public void error(final String message, final Throwable throwable) {
-        System.out.println("[ERROR]" + message);
-        throwable.printStackTrace();
+        System.err.println("[ERROR]" + message);
+        throwable.printStackTrace(System.err);
     }
 }

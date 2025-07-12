@@ -4,7 +4,7 @@ import java.util.List;
 
 import ink.reactor.kernel.Reactor;
 import ink.reactor.protocol.netty.inbound.InboundPacket;
-import ink.reactor.protocol.netty.inbound.PacketInData;
+import ink.reactor.protocol.netty.inbound.NettyReadBuffer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
@@ -18,7 +18,7 @@ public final class NoCompressionDecoder extends ByteToMessageDecoder {
         }
 
         in.markReaderIndex();
-        final int packetLength = PacketInData.readVarIntSafely(in);
+        final int packetLength = NettyReadBuffer.readVarIntSafely(in);
 
         if (packetLength == -1) {
             in.resetReaderIndex();
@@ -35,7 +35,7 @@ public final class NoCompressionDecoder extends ByteToMessageDecoder {
         }
 
         final ByteBuf packetData = in.readBytes(packetLength);
-        final PacketInData packetInData = new PacketInData(packetData);
+        final NettyReadBuffer packetInData = new NettyReadBuffer(packetData);
         final int id = packetInData.readVarInt();
 
         out.add(new InboundPacket(id, packetInData));
@@ -43,7 +43,7 @@ public final class NoCompressionDecoder extends ByteToMessageDecoder {
 
     @Override
     public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) {
-        Reactor.getServer().getLogger().error("Error decoding packet", cause);
+        Reactor.getServer().logger().error("Error decoding packet", cause);
         ctx.close();
     }
 }

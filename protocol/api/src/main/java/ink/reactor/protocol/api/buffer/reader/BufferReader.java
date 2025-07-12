@@ -146,6 +146,26 @@ public final class BufferReader implements ReaderBuffer {
     }
 
     @Override
+    public String readString(final int maxLength) {
+        final int length = readVarInt();
+        if (length > maxLength) {
+            throw new IllegalStateException("Length expected is more than max-length. Length: " + length + ". Max: " + maxLength);
+        }
+        final byte[] bytes = new byte[length];
+        System.arraycopy(buffer, index, bytes, 0, length);
+        index += length;
+        return new String(bytes, StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public BitSet readFixedBitSet(final int size) {
+        final byte[] bytes = new byte[-Math.floorDiv(-size, 8)];
+        System.arraycopy(buffer, index, bytes, 0, bytes.length);
+        index += bytes.length;
+        return BitSet.valueOf(bytes);
+    }
+
+    @Override
     public int getIndex() {
         return index;
     }

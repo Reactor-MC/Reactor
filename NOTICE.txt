@@ -1,0 +1,54 @@
+                            Reactor-MC
+
+Copyright 2025 Reactor-MC Project
+
+The Reactor-MC Project licenses this file to you under the Apache License,
+version 2.0 (the "License"); you may not use this file except in compliance
+with the License. You may obtain a copy of the License at:
+
+  https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations
+under the License.
+
+Also, please refer to each <component>-LICENSE.txt file, which is located in
+the 'license' directory of the distribution file, for the license terms of the
+components that this product depends on.
+
+-------------------------------------------------------------------------------
+
+This product depends on 'Snakeyaml-Engine', an engine for deserialize yaml files in
+pure Java, which can be obtained at:
+
+  LICENSE:
+    license/snakeyaml-engine-LICENSE.txt (Apache License 2.0)
+  HOMEPAGE:
+    https://github.com/snakeyaml/snakeyaml-engine
+
+This product depends on 'Jline3', is a Java library for handling console input, which can be obtained at:
+
+  LICENSE:
+    license/jline3-LICENSE.txt (BSD-3-Clause)
+  HOMEPAGE:
+    https://jline.org/
+
+This product depends on 'Netty', is an asynchronous event-driven network application framework for rapid development
+of maintainable high performance protocol servers & clients, which can be obtained at:
+
+  LICENSE:
+    license/netty-LICENSE.txt (Apache License 2.0)
+  NOTICE:
+    license/netty-NOTICE.txt
+  HOMEPAGE:
+    https://netty.io/
+
+This product depends on 'Lombok', a Java library that automatically plugs into your editor and build tools to add boilerplate-free behavior to your Java code,
+which can be obtained at:
+
+  LICENSE:
+    license/lombok-LICENSE.txt (Project Lombok License / MIT-like)
+  HOMEPAGE:
+    https://projectlombok.org/

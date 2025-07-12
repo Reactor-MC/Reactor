@@ -195,21 +195,30 @@ public final class ExpectedSizeBuffer implements WriterBuffer {
     }
 
     @Override
-    public void revert(final int amountBytes) {
-        final int bytesToRevert = index-amountBytes;
-        if (bytesToRevert < 0) {
-            throw new IllegalArgumentException("Amount to revert need be less than bufferSize+1");
+    public void back(final int amountBytes) {
+        if (this.index - amountBytes < 0) {
+            throw new IllegalArgumentException("Cannot back beyond start of buffer");
         }
-        for (int i = index; i > bytesToRevert; i--) {
+        this.index -= amountBytes;
+    }
+
+    @Override
+    public void revertTo(final int index) {
+        if (index < 0) {
+            throw new IllegalArgumentException("Amount to revert need be more than or equals to 1");
+        }
+        for (int i = index; i <= this.index; i++) {
             buffer[i] = 0;
-            index--;
         }
+        this.index = index;
     }
 
     @Override
     public void skip(final int amountBytes) {
         if (this.index + amountBytes >= buffer.length) {
-            throw new ArrayIndexOutOfBoundsException("Max buffer length: " + buffer.length + ". Current index: " + this.index + ". Expected index: " + (this.index + amountBytes));
+            throw new ArrayIndexOutOfBoundsException("Max buffer length: " + buffer.length +
+                ". Current index: " + this.index +
+                ". Expected index: " + (this.index + amountBytes));
         }
         this.index += amountBytes;
     }
@@ -227,5 +236,10 @@ public final class ExpectedSizeBuffer implements WriterBuffer {
     @Override
     public int getIndex() {
         return index;
+    }
+
+    @Override
+    public void setIndex(final int index) {
+        this.index = index;
     }
 }

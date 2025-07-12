@@ -1,0 +1,65 @@
+enable: true
+
+prefix:
+  # Time format is specified in https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns
+  date-formatter: "HH:mm:ss"
+
+  debug: "[DEBUG %time%] "
+  log: "[LOG %time%] "
+  info: "[INFO %time%] "
+  warn: "[WARN %time%] "
+  error: "[ERROR %time%] "
+
+console:
+  enable: true
+  levels:
+    debug: true
+    log: true
+    info: true
+    warn: true
+    error: true
+
+  styles:
+    debug:
+      prefix: "\u001B[32m" # Green
+      text: "\u001B[0m" # Reset colors
+      # To set text with the same color as prefix, remove text section and add:
+      # after-text: "\u001B[0m"
+    log:
+      prefix: "\u001B[36m" # Cyan
+      text: "\u001B[0m"
+    info:
+      prefix: "\u001B[34m" # Blue
+      text: "\u001B[0m"
+    warn:
+      prefix: "\u001B[33m" # Yellow
+      text: "\u001B[0m"
+    error:
+      prefix: "\u001B[31m" # Red
+      text: "\u001B[31m"
+      after-text: "\u001B[0m"
+
+logs:
+  enable: true
+
+  buffer-size: 8192
+  max-file-size: 5e6 # 5MB
+
+  auto-flush:
+    enable: true
+    min-buffer-size-to-flush: 1024
+    unit: "SECONDS" # MICROSECONDS, SECONDS, DAYS, MINUTES, HOURS, DAYS
+    amount: 10
+
+  gzip:
+    enable: true
+    level: 6 # 0 (Faster) -> 9 (Best compression)
+
+  logs-folder: "logs"
+
+  levels:
+    debug: false
+    log: true
+    info: true
+    warn: true
+    error: true

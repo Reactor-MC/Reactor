@@ -1,0 +1,14 @@
+{
+    "string": "Hello World!",
+    "numbers": {
+        "int": 1000,
+        "exponential": 1e3,
+        "decimal": 3.14159
+    },
+    "section-arrays": [
+        {
+            "subsection1": "Hi"
+        }
+    ],
+    "number-arrays": [343597383674, -1, 2.214, 1e1]
+}

@@ -11,6 +11,10 @@ public final class JavaLoggerFormatter implements LoggerFormatter {
         this.formatter = formatter;
     }
 
+    public JavaLoggerFormatter() {
+        this.formatter = new Formatter();
+    }
+
     @Override
     public String format(final String text, final Object... objects) {
         return (objects == null || objects.length == 0) ? text : formatter.format(text, objects).toString();

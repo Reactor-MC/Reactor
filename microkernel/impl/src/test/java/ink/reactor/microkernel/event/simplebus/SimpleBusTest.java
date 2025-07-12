@@ -93,7 +93,7 @@ public class SimpleBusTest {
         private int priorityLowest = 0;
         private int priorityHighest = 0;
 
-        @Listener(priority = 0)
+        @Listener
         public void onGetIntLowest(final Integer integer) {
             if (priorityLowest == 0) {
                 Assertions.assertEquals(2, priorityHighest, "Lowest priority runs after highest");

@@ -1,6 +1,8 @@
 package ink.reactor.protocol.api.buffer.writer;
 
 import ink.reactor.protocol.api.buffer.DataSize;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.BitSet;
@@ -11,8 +13,10 @@ import java.util.UUID;
  * This alternative don't throw ArrayIndexOutOfBounds if
  * you write more data than the initial size (Automatic resize the buffer)
  */
+@Getter
 public final class DynamicSizeBuffer implements WriterBuffer {
 
+    @Setter
     private ExpectedSizeBuffer currentBuffer;
     private final float resizeFactor;
 
@@ -26,7 +30,7 @@ public final class DynamicSizeBuffer implements WriterBuffer {
         this.resizeFactor = resizeFactor;
     }
 
-    public final void tryResize(final int amountToAdd) {
+    public void tryResize(final int amountToAdd) {
         if (currentBuffer.index + amountToAdd >= currentBuffer.buffer.length) {
             final int newSize = (int)((currentBuffer.buffer.length + amountToAdd) * resizeFactor);
             final int currentIndex = currentBuffer.index;
@@ -39,85 +43,85 @@ public final class DynamicSizeBuffer implements WriterBuffer {
     }
 
     @Override
-    public final void writeVarInt(final int i) {
+    public void writeVarInt(final int i) {
         tryResize(DataSize.varInt(i));
         currentBuffer.writeVarInt(i);
     }
 
     @Override
-    public final void writeBytes(final byte[] bytes) {
+    public void writeBytes(final byte[] bytes) {
         tryResize(bytes.length);
         currentBuffer.writeBytes(bytes);
     }
 
     @Override
-    public final void writeBytes(final byte[] bytes, final int length) {
+    public void writeBytes(final byte[] bytes, final int length) {
         tryResize(length);
         currentBuffer.writeBytes(bytes, length);
     }
 
     @Override
-    public final void writeChars(final char[] chars) {
+    public void writeChars(final char[] chars) {
         tryResize(chars.length * 2);
         currentBuffer.writeChars(chars);
     }
 
     @Override
-    public final void writeBoolean(final boolean v) {
+    public void writeBoolean(final boolean v) {
         tryResize(DataSize.BOOLEAN);
         currentBuffer.writeBoolean(v);
     }
 
     @Override
-    public final void writeByte(final byte v) {
+    public void writeByte(final byte v) {
         tryResize(DataSize.BYTE);
         currentBuffer.writeByte(v);
     }
 
     @Override
-    public final void writeByte(final int v) {
+    public void writeByte(final int v) {
         tryResize(DataSize.BYTE);
         currentBuffer.writeByte(v);
     }
 
     @Override
-    public final void writeShort(final int v) {
+    public void writeShort(final int v) {
         tryResize(DataSize.SHORT);
         currentBuffer.writeShort(v);
     }
 
     @Override
-    public final void writeChar(final char character) {
+    public void writeChar(final char character) {
         tryResize(DataSize.SHORT);
         currentBuffer.writeChar(character);
     }
 
     @Override
-    public final void writeInt(final int v) {
+    public void writeInt(final int v) {
         tryResize(DataSize.INT);
         currentBuffer.writeInt(v);
     }
 
     @Override
-    public final void writeLong(final long v) {
+    public void writeLong(final long v) {
         tryResize(DataSize.LONG);
         currentBuffer.writeLong(v);
     }
 
     @Override
-    public final void writeFloat(final float v) {
+    public void writeFloat(final float v) {
         tryResize(DataSize.FLOAT);
         currentBuffer.writeFloat(v);
     }
 
     @Override
-    public final void writeDouble(final double v) {
+    public void writeDouble(final double v) {
         tryResize(DataSize.DOUBLE);
         currentBuffer.writeDouble(v);
     }
 
     @Override
-    public final void writeUUID(final UUID uuid) {
+    public void writeUUID(final UUID uuid) {
         tryResize(DataSize.UUID);
         currentBuffer.writeUUID(uuid);
     }
@@ -134,7 +138,7 @@ public final class DynamicSizeBuffer implements WriterBuffer {
     }
 
     @Override
-    public final void writeString(final String string) {
+    public void writeString(final String string) {
         final byte[] bytes = string.getBytes(StandardCharsets.UTF_8);
         tryResize(bytes.length + DataSize.varInt(bytes.length));
         currentBuffer.writeVarInt(bytes.length);
@@ -148,34 +152,32 @@ public final class DynamicSizeBuffer implements WriterBuffer {
     }
 
     @Override
-    public final void revert(final int amountBytes) {
-        currentBuffer.revert(amountBytes);
+    public void back(final int amountBytes) {
+        currentBuffer.back(amountBytes);
     }
 
     @Override
-    public final void skip(final int amountBytes) {
+    public void revertTo(final int index) {
+        currentBuffer.revertTo(index);
+    }
+
+    @Override
+    public void skip(final int amountBytes) {
         currentBuffer.skip(amountBytes);
     }
 
     @Override
-    public final byte[] compress() {
+    public byte[] compress() {
         return currentBuffer.compress();
     }
 
     @Override
-    public final int getIndex() {
+    public int getIndex() {
         return currentBuffer.getIndex();
     }
 
-    public final ExpectedSizeBuffer getCurrentBuffer() {
-        return currentBuffer;
-    }
-
-    public final float getResizeFactor() {
-        return resizeFactor;
-    }
-
-    public final void setCurrentBuffer(ExpectedSizeBuffer currentBuffer) {
-        this.currentBuffer = currentBuffer;
+    @Override
+    public void setIndex(final int index) {
+        currentBuffer.setIndex(index);
     }
 }

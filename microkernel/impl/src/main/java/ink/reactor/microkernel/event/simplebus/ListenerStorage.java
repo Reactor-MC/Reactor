@@ -22,7 +22,9 @@ final class ListenerStorage {
             listeners = Arrays.copyOf(listeners, size * 2);
         }
         listeners[size++] = listener;
-        sorted = false;
+        if (listener.priority() != 0) { // Optimization: Don't sort array if isn't necessary - Default priority
+            sorted = false;
+        }
     }
 
     public void remove(final RegisteredListener listener) {

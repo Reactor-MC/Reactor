@@ -3,9 +3,11 @@ package ink.reactor.microkernel.event.simplebus;
 import ink.reactor.kernel.event.EventBus;
 import ink.reactor.kernel.event.EventExecutor;
 import ink.reactor.kernel.event.ListenerPhase;
+import ink.reactor.kernel.logger.Logger;
 import ink.reactor.microkernel.event.executor.ListenerConsumerExecutor;
 import ink.reactor.microkernel.event.loader.MethodListenerLoader;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,16 +16,21 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 @RequiredArgsConstructor
+@Setter
 public final class SimpleEventBus implements EventBus {
 
     private final Map<Class<?>, EventStorage> eventsStorage;
     private final Map<Object, Collection<RegisteredListener>> owners;
 
-    private final MethodListenerLoader methodListenerLoader;
+    private MethodListenerLoader methodListenerLoader;
 
-    public SimpleEventBus(MethodListenerLoader methodListenerLoader) {
+    public SimpleEventBus() {
         this.owners = new HashMap<>();
         this.eventsStorage = new HashMap<>();
+    }
+
+    public SimpleEventBus(final MethodListenerLoader methodListenerLoader) {
+        this();
         this.methodListenerLoader = methodListenerLoader;
     }
 
@@ -99,5 +106,9 @@ public final class SimpleEventBus implements EventBus {
     @Override
     public void clear() {
         eventsStorage.clear();
+    }
+
+    public void setLogger(final Logger logger) {
+        this.methodListenerLoader = new MethodListenerLoader(logger);
     }
 }
