@@ -5,10 +5,7 @@ import ink.reactor.kernel.logger.Logger;
 import ink.reactor.launcher.logger.ConsoleLogger;
 import ink.reactor.launcher.logger.NoneLogger;
 import ink.reactor.launcher.logger.ReactorLogger;
-import ink.reactor.launcher.logger.file.FileGZIPCompressor;
-import ink.reactor.launcher.logger.file.FileLogger;
-import ink.reactor.launcher.logger.file.FileServerStopListener;
-import ink.reactor.launcher.logger.file.FileWriter;
+import ink.reactor.launcher.logger.file.*;
 import ink.reactor.microkernel.logger.JavaLoggerFormatter;
 import ink.reactor.sdk.config.ConfigSection;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +62,30 @@ public final class LoggerConfigLoader {
         final Path path = Path.of(logsFolder + "/latest.log");
         final FileChannel channel;
 
+        channel = createLogChannel(path, logsSection);
+        if (channel == null) return null;
+
+        final FileWriter fileWriter = new FileWriter(
+            logsSection.getLong("max-file-size"),
+            logsSection.getOrDefault("bufferSection", 8192),
+            channel
+        );
+
+        final ConfigSection autoFlush = logsSection.getSection("auto-flush");
+        if (autoFlush != null && autoFlush.getBoolean("enable")) {
+            FileAutoFlushTask.createThread(
+                fileWriter,
+                autoFlush.getInt("min-buffer-size-to-flush"),
+                autoFlush.getInt("every-seconds")
+            ).start();
+        }
+
+        eventBus.register(new FileServerStopListener(fileWriter));
+        return new FileLogger(loggerConfig, fileWriter);
+    }
+
+    private FileChannel createLogChannel(Path path, ConfigSection logsSection) {
+        final FileChannel channel;
         try {
             if (Files.exists(path) && Files.size(path) > 0) {
                 final ConfigSection gzip = logsSection.getSection("gzip");
@@ -82,15 +103,7 @@ public final class LoggerConfigLoader {
             e.printStackTrace(System.err);
             return null;
         }
-
-        final FileWriter fileWriter = new FileWriter(
-            logsSection.getLong("max-file-size"),
-            logsSection.getOrDefault("bufferSection", 8192),
-            channel
-        );
-
-        eventBus.register(new FileServerStopListener(fileWriter));
-        return new FileLogger(loggerConfig, fileWriter);
+        return channel;
     }
 
     private ConsoleLogger loadConsoleLogger(final ConfigSection section) {

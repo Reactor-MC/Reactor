@@ -48,8 +48,7 @@ logs:
   auto-flush:
     enable: true
     min-buffer-size-to-flush: 1024
-    unit: "SECONDS" # MICROSECONDS, SECONDS, DAYS, MINUTES, HOURS, DAYS
-    amount: 10
+    interval-seconds: 10
 
   gzip:
     enable: true

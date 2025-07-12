@@ -12,5 +12,6 @@ public final class FileServerStopListener {
     @Listener
     public void onServerStop(final StopEvent event) {
         fileWriter.flush();
+        fileWriter.close();
     }
 }
