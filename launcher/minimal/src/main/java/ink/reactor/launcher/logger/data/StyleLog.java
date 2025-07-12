@@ -1,4 +1,4 @@
-package ink.reactor.launcher.logger.config;
+package ink.reactor.launcher.logger.data;
 
 public record StyleLog(
     String prefix,

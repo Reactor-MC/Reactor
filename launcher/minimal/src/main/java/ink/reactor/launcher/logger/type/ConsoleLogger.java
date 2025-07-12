@@ -1,7 +1,7 @@
-package ink.reactor.launcher.logger;
+package ink.reactor.launcher.logger.type;
 
-import ink.reactor.launcher.logger.config.LoggerConfig;
-import ink.reactor.launcher.logger.config.StyleLog;
+import ink.reactor.launcher.logger.data.LoggerLevels;
+import ink.reactor.launcher.logger.data.StyleLog;
 import lombok.RequiredArgsConstructor;
 
 import java.io.PrintWriter;
@@ -9,41 +9,41 @@ import java.io.PrintWriter;
 @RequiredArgsConstructor
 public final class ConsoleLogger {
     private final PrintWriter writer;
-    private final LoggerConfig loggerConfig;
+    private final LoggerLevels loggerLevels;
     private final StyleLog debugStyle, logStyle, infoStyle, warnStyle, errorStyle;
 
     public void debug(final String prefix, final String message) {
-        if (loggerConfig.debug()) {
+        if (loggerLevels.debug()) {
             writer.println(debugStyle.style(prefix, message));
         }
     }
 
     public void log(final String prefix, final String message) {
-        if (loggerConfig.log()) {
+        if (loggerLevels.log()) {
             writer.println(logStyle.style(prefix, message));
         }
     }
 
     public void info(final String prefix, final String message) {
-        if (loggerConfig.info()) {
+        if (loggerLevels.info()) {
             writer.println(infoStyle.style(prefix, message));
         }
     }
 
     public void warn(final String prefix, final String message) {
-        if (loggerConfig.warn()) {
+        if (loggerLevels.warn()) {
             writer.println(warnStyle.style(prefix, message));
         }
     }
 
     public void error(final String prefix, final String message) {
-        if (loggerConfig.error()) {
+        if (loggerLevels.error()) {
             writer.println(errorStyle.style(prefix, message));
         }
     }
 
     public void error(final String prefix, final String message, final Throwable throwable) {
-        if (loggerConfig.error()) {
+        if (loggerLevels.error()) {
             writer.println(errorStyle.style(prefix, message));
             throwable.printStackTrace(System.err);
         }

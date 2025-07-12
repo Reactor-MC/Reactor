@@ -1,45 +1,46 @@
-package ink.reactor.launcher.logger.file;
+package ink.reactor.launcher.logger.type;
 
-import ink.reactor.launcher.logger.config.LoggerConfig;
+import ink.reactor.launcher.logger.data.LoggerLevels;
+import ink.reactor.launcher.logger.file.FileWriter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public final class FileLogger {
-    private final LoggerConfig loggerConfig;
+    private final LoggerLevels loggerLevels;
     private final FileWriter fileWriter;
 
     public void debug(final String message) {
-        if (loggerConfig.debug() && fileWriter.canWrite()) {
+        if (loggerLevels.debug() && fileWriter.canWrite()) {
             fileWriter.write(message.getBytes());
         }
     }
 
     public void log(final String message) {
-        if (loggerConfig.log() && fileWriter.canWrite()) {
+        if (loggerLevels.log() && fileWriter.canWrite()) {
             fileWriter.write(message.getBytes());
         }
     }
 
     public void info(final String message) {
-        if (loggerConfig.info() && fileWriter.canWrite()) {
+        if (loggerLevels.info() && fileWriter.canWrite()) {
             fileWriter.write(message.getBytes());
         }
     }
 
     public void warn(final String message) {
-        if (loggerConfig.warn() && fileWriter.canWrite()) {
+        if (loggerLevels.warn() && fileWriter.canWrite()) {
             fileWriter.write(message.getBytes());
         }
     }
 
     public void error(final String message) {
-        if (loggerConfig.error() && fileWriter.canWrite()) {
+        if (loggerLevels.error() && fileWriter.canWrite()) {
             fileWriter.write(message.getBytes());
         }
     }
 
     public void error(final String message, final Throwable throwable) {
-        if (loggerConfig.error() && fileWriter.canWrite()) {
+        if (loggerLevels.error() && fileWriter.canWrite()) {
             fileWriter.write(message.getBytes());
             fileWriter.write(('\n' + throwable.toString()).getBytes());
 

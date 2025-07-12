@@ -1,13 +1,18 @@
-package ink.reactor.launcher.logger.config;
+package ink.reactor.launcher.logger;
 
 import ink.reactor.kernel.event.EventBus;
+import ink.reactor.kernel.event.common.StopEvent;
 import ink.reactor.kernel.logger.Logger;
-import ink.reactor.launcher.logger.ConsoleLogger;
-import ink.reactor.launcher.logger.NoneLogger;
-import ink.reactor.launcher.logger.ReactorLogger;
+import ink.reactor.launcher.logger.data.LoggerLevels;
+import ink.reactor.launcher.logger.data.StyleLog;
 import ink.reactor.launcher.logger.file.*;
+import ink.reactor.launcher.logger.type.ConsoleLogger;
+import ink.reactor.launcher.logger.type.FileLogger;
+import ink.reactor.launcher.logger.type.NoneLogger;
+import ink.reactor.launcher.logger.type.ReactorLogger;
 import ink.reactor.microkernel.logger.JavaLoggerFormatter;
 import ink.reactor.sdk.config.ConfigSection;
+import ink.reactor.sdk.config.ConfigService;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
@@ -20,12 +25,21 @@ import java.time.format.DateTimeFormatter;
 import java.util.EnumSet;
 
 @RequiredArgsConstructor
-public final class LoggerConfigLoader {
+public final class LoggersLoader {
 
     private final PrintWriter consoleWriter;
     private final EventBus eventBus;
 
-    public Logger loadLogger(final ConfigSection section) {
+    public Logger load(final ConfigService configService, final Logger defaultLogger) {
+        try {
+            return load(configService.createIfAbsentAndLoad("logger.yml", getClass().getClassLoader()));
+        } catch (final IOException e) {
+            defaultLogger.error("Can't load logger.yml", e);
+            return new NoneLogger();
+        }
+    }
+
+    private Logger load(final ConfigSection section) {
         if (!section.getBoolean("enable")) {
             return new NoneLogger();
         }
@@ -53,8 +67,8 @@ public final class LoggerConfigLoader {
 
     private FileLogger loadFileLogger(final ConfigSection section) {
         final ConfigSection logsSection = section.getSection("logs");
-        final LoggerConfig loggerConfig = loadConfig(logsSection);
-        if (loggerConfig == null) {
+        final LoggerLevels loggerLevels = loadLevels(logsSection);
+        if (loggerLevels == null) {
             return null;
         }
 
@@ -80,8 +94,11 @@ public final class LoggerConfigLoader {
             ).start();
         }
 
-        eventBus.register(new FileServerStopListener(fileWriter));
-        return new FileLogger(loggerConfig, fileWriter);
+        eventBus.register(StopEvent.class, (_) -> {
+            fileWriter.flush();
+            fileWriter.close();
+        });
+        return new FileLogger(loggerLevels, fileWriter);
     }
 
     private FileChannel createLogChannel(Path path, ConfigSection logsSection) {
@@ -108,18 +125,18 @@ public final class LoggerConfigLoader {
 
     private ConsoleLogger loadConsoleLogger(final ConfigSection section) {
         final ConfigSection consoleSection = section.getSection("console");
-        final LoggerConfig loggerConfig = loadConfig(consoleSection);
-        if (loggerConfig == null) {
+        final LoggerLevels loggerLevels = loadLevels(consoleSection);
+        if (loggerLevels == null) {
             return null;
         }
         final ConfigSection styles = consoleSection.getSection("styles");
         if (styles == null) {
             final StyleLog noneStyle = new StyleLog("","","");
-            return new ConsoleLogger(consoleWriter, loggerConfig, noneStyle, noneStyle, noneStyle, noneStyle, noneStyle);
+            return new ConsoleLogger(consoleWriter, loggerLevels, noneStyle, noneStyle, noneStyle, noneStyle, noneStyle);
         }
         return new ConsoleLogger(
             consoleWriter,
-            loggerConfig,
+            loggerLevels,
             loadStyle(styles.getSection("debug")),
             loadStyle(styles.getSection("log")),
             loadStyle(styles.getSection("info")),
@@ -128,16 +145,16 @@ public final class LoggerConfigLoader {
         );
     }
 
-    private LoggerConfig loadConfig(final ConfigSection logger) {
+    private LoggerLevels loadLevels(final ConfigSection logger) {
         if (logger == null || !logger.getBoolean("enable")) {
             return null;
         }
         final ConfigSection levels = logger.getSection("levels");
         if (levels == null) {
-            return new LoggerConfig(true, true, true, true, true);
+            return new LoggerLevels(true, true, true, true, true);
         }
 
-        return new LoggerConfig(
+        return new LoggerLevels(
             levels.getBoolean("debug"),
             levels.getBoolean("log"),
             levels.getBoolean("info"),

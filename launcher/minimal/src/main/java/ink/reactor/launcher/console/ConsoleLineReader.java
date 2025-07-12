@@ -51,6 +51,7 @@ final class ConsoleLineReader {
             e.printStackTrace(System.err);
         } finally {
             run = false;
+            Runtime.getRuntime().exit(0);
         }
     }
 }

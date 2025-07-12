@@ -1,0 +1,8 @@
+host: "0.0.0.0"
+port: 25565
+
+boss-thread-count: 4 # Set in -1 to use all cores
+worker-thread-count: 1
+
+tcp-fast-open: true
+tcp-fast-open-connections: 1

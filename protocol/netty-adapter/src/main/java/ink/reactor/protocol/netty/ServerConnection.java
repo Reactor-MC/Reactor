@@ -70,7 +70,6 @@ public final class ServerConnection {
 
     public void shutdown() {
         try {
-            playerConnections.clear();
             future.channel().close().sync();
         } catch(InterruptedException e) {
             logger.error("Error on shutdown server connection", e);

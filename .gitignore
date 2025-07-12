@@ -44,3 +44,5 @@ logs
 /data-parser/src/main/java/ink/reactor/output
 /data-parser/src/main/resources/combiner/input
 /data-parser/src/main/resources/combiner/output
+logger.yml
+network.yml

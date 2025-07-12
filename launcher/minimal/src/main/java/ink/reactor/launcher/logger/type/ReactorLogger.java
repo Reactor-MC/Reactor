@@ -1,8 +1,7 @@
-package ink.reactor.launcher.logger;
+package ink.reactor.launcher.logger.type;
 
 import ink.reactor.kernel.logger.Logger;
 import ink.reactor.kernel.logger.LoggerFormatter;
-import ink.reactor.launcher.logger.file.FileLogger;
 import ink.reactor.microkernel.logger.JavaLoggerFormatter;
 import lombok.RequiredArgsConstructor;
 
