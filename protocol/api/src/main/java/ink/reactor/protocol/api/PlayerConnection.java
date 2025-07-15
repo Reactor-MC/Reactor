@@ -11,4 +11,9 @@ public interface PlayerConnection {
 
     ProtocolBridge getProtocol();
     ConnectionState getState();
+
+    void setBridge(final ProtocolBridge bridge);
+    void changeState(final ConnectionState state);
+
+    void close();
 }
