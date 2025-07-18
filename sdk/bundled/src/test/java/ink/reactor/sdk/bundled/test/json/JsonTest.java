@@ -19,7 +19,7 @@ public final class JsonTest {
     @Test
     public void testMinifier() throws IOException {
         final ConfigSection exampleSection = createExampleSection();
-        assertEquals(new String(loadJsonFile("example-minify.json")), MinifierJsonFormatConverter.INSTANCE.toJson(exampleSection));
+        assertEquals(new String(loadJsonFile("example-minify.json")), new MinifierJsonFormatConverter().toJson(exampleSection));
     }
 
     @Test
