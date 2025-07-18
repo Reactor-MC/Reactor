@@ -49,7 +49,7 @@ public final class JsonConfigService extends AbstractConfigService {
         try {
             final String json = options.prettyFormat()
                 ? new PrettyJsonFormatConverter(options.indentSpaces()).toJson(section)
-                : MinifierJsonFormatConverter.INSTANCE.toJson(section);
+                : new MinifierJsonFormatConverter().toJson(section);
 
             Files.writeString(path, json, StandardOpenOption.WRITE);
         } catch (IOException e) {

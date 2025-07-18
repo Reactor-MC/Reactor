@@ -14,3 +14,5 @@ include("sdk:common")
 include("sdk:bundled")
 
 include("tools:code-generator")
+
+include("libs:nbt")

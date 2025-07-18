@@ -8,10 +8,6 @@ import java.util.Set;
 
 public final class MinifierJsonFormatConverter {
 
-    public static MinifierJsonFormatConverter INSTANCE = new MinifierJsonFormatConverter();
-
-    private MinifierJsonFormatConverter() {}
-
     private final StringBuilder builder = new StringBuilder();
 
     public String toJson(final ConfigSection configSection) {
