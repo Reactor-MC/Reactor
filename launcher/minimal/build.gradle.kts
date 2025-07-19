@@ -12,7 +12,8 @@ dependencies {
     implementation(project(":microkernel:impl"))
 
     implementation(project(":sdk:bundled"))
-    implementation("org.jline:jline:3.30.4")
+    implementation("org.jline:jline-terminal:3.30.4")
+    implementation("org.jline:jline-reader:3.30.4")
 }
 
 tasks.withType<Jar> {

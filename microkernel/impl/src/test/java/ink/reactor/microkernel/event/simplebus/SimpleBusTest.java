@@ -52,7 +52,7 @@ public class SimpleBusTest {
 
     @Test
     public void testSimpleEventBus() {
-        final SimpleEventBus eventBus = new SimpleEventBus(new MethodListenerLoader(new PrintlnLogger()));
+        final SimpleEventBus eventBus = new SimpleEventBus(new PrintlnLogger());
         final ExampleListenerWithDifferentPhase differentPhase = new ExampleListenerWithDifferentPhase();
 
         eventBus.register(differentPhase);

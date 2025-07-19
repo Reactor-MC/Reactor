@@ -1,8 +1,7 @@
 package ink.reactor.launcher.logger;
 
-import ink.reactor.kernel.event.EventBus;
-import ink.reactor.kernel.event.common.StopEvent;
 import ink.reactor.kernel.logger.Logger;
+import ink.reactor.launcher.ReactorLauncher;
 import ink.reactor.launcher.logger.data.LoggerLevels;
 import ink.reactor.launcher.logger.data.StyleLog;
 import ink.reactor.launcher.logger.file.*;
@@ -28,13 +27,13 @@ import java.util.EnumSet;
 public final class LoggersLoader {
 
     private final PrintWriter consoleWriter;
-    private final EventBus eventBus;
 
-    public Logger load(final ConfigService configService, final Logger defaultLogger) {
+    public Logger load(final ConfigService configService) {
         try {
             return load(configService.createIfAbsentAndLoad("logger.yml", getClass().getClassLoader()));
         } catch (final IOException e) {
-            defaultLogger.error("Can't load logger.yml", e);
+            System.err.println("Can't load logger.yml");
+            e.printStackTrace(System.err);
             return new NoneLogger();
         }
     }
@@ -94,10 +93,9 @@ public final class LoggersLoader {
             ).start();
         }
 
-        eventBus.register(StopEvent.class, (_) -> {
-            fileWriter.flush();
-            fileWriter.close();
-        });
+        ReactorLauncher.STOP_TASKS.add(fileWriter::flush);
+        ReactorLauncher.STOP_TASKS.add(fileWriter::close);
+
         return new FileLogger(loggerLevels, fileWriter);
     }
 

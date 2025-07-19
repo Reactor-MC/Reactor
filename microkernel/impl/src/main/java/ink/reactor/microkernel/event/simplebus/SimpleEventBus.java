@@ -1,5 +1,6 @@
 package ink.reactor.microkernel.event.simplebus;
 
+import ink.reactor.kernel.Reactor;
 import ink.reactor.kernel.event.EventBus;
 import ink.reactor.kernel.event.EventExecutor;
 import ink.reactor.kernel.event.ListenerPhase;
@@ -22,16 +23,16 @@ public final class SimpleEventBus implements EventBus {
     private final Map<Class<?>, EventStorage> eventsStorage;
     private final Map<Object, Collection<RegisteredListener>> owners;
 
-    private MethodListenerLoader methodListenerLoader;
+    private final MethodListenerLoader methodListenerLoader;
 
-    public SimpleEventBus() {
+    public SimpleEventBus(final Logger logger) {
         this.owners = new HashMap<>();
         this.eventsStorage = new HashMap<>();
+        this.methodListenerLoader = new MethodListenerLoader(logger);
     }
 
-    public SimpleEventBus(final MethodListenerLoader methodListenerLoader) {
-        this();
-        this.methodListenerLoader = methodListenerLoader;
+    public SimpleEventBus() {
+        this(Reactor.getServer().logger());
     }
 
     @Override
@@ -106,9 +107,5 @@ public final class SimpleEventBus implements EventBus {
     @Override
     public void clear() {
         eventsStorage.clear();
-    }
-
-    public void setLogger(final Logger logger) {
-        this.methodListenerLoader = new MethodListenerLoader(logger);
     }
 }

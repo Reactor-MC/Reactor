@@ -35,7 +35,7 @@ public final class ServerConnection {
 
     private final List<NettyPlayerConnection> playerConnections = Collections.synchronizedList(new ArrayList<>());
 
-    public void connect(final NettyConfig config) {
+    public void connect(final NettyConfig config) throws InterruptedException {
         final int workerThreadCount = config.workerThreadCount();
         final int bossThreadCount = config.bossThreadCount();
 
@@ -65,7 +65,7 @@ public final class ServerConnection {
             .group(bossGroup, workerGroup)
             .localAddress(config.ip(), config.port())
             .bind()
-            .syncUninterruptibly();
+            .sync();
     }
 
     public void shutdown() {

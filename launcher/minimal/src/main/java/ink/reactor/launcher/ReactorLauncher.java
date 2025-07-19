@@ -2,11 +2,9 @@ package ink.reactor.launcher;
 
 import ink.reactor.kernel.Reactor;
 import ink.reactor.kernel.ReactorServer;
-import ink.reactor.kernel.event.common.StopEvent;
 import ink.reactor.kernel.logger.Logger;
 import ink.reactor.launcher.console.Console;
-import ink.reactor.launcher.console.ConsoleStart;
-import ink.reactor.launcher.logger.type.DefaultLogger;
+import ink.reactor.launcher.console.JLineConsole;
 import ink.reactor.launcher.logger.LoggersLoader;
 import ink.reactor.launcher.network.NetworkLoader;
 import ink.reactor.microkernel.event.simplebus.SimpleEventBus;
@@ -17,48 +15,52 @@ import ink.reactor.sdk.bundled.config.yaml.YamlConfigService;
 import ink.reactor.sdk.config.ConfigService;
 import ink.reactor.sdk.config.ConfigServiceRegistry;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public final class ReactorLauncher {
 
+    public static final Collection<Runnable> STOP_TASKS = new ArrayList<>();
+
     public static void main(final String[] args)  {
-        final Console console = new ReactorLauncher().startServer();
+        final Console console = ReactorLauncher.startServer();
         if (console != null) {
             console.run();
         }
     }
 
-    private Console startServer() {
+    private static Console startServer() {
         final long start = System.currentTimeMillis();
 
-        final ConsoleStart.TerminalHolder terminal = ConsoleStart.createTerminal();
-        if (terminal == null) {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            for (final Runnable runnable : STOP_TASKS) {
+                runnable.run();
+            }
+        }));
+
+        final Console console = JLineConsole.createConsole();
+        if (console == null) {
             return null;
         }
 
-        ConfigServiceRegistry.addProvider(new YamlConfigService());
+        final ConfigService configService = new YamlConfigService();
+        ConfigServiceRegistry.addProvider(configService);
         ConfigServiceRegistry.addProvider(new JsonConfigService());
 
-        final Logger defaultLogger = new DefaultLogger();
-        final SimpleEventBus eventBus = new SimpleEventBus();
-        eventBus.setLogger(defaultLogger);
+        final Logger logger = new LoggersLoader(console.getTerminal().writer()).load(configService);
 
-        final ConfigService configService = ConfigServiceRegistry.getProvider("yml");
-
-        final Logger logger = new LoggersLoader(terminal.writer(), eventBus).load(configService, defaultLogger);
-        eventBus.setLogger(logger);
+        if (!new NetworkLoader(logger).load(configService)) {
+            return null;
+        }
 
         Reactor.setServer(new ReactorServer(
             logger,
             new SimpleLoggerFactory(logger),
             new TickScheduler(),
-            eventBus
+            new SimpleEventBus(logger)
         ));
 
-        new NetworkLoader(logger, eventBus).load(configService);
-
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> eventBus.post(new StopEvent(start, System.currentTimeMillis() + start))));
-
-        final Console console = ConsoleStart.createConsole(terminal, eventBus);
-        logger.info("Server started in: " + (System.currentTimeMillis() - start));
+        logger.info("Server started in: " + (System.currentTimeMillis() - start) + "ms");
         return console;
     }
 }
