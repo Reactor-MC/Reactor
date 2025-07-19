@@ -1,7 +1,6 @@
 package ink.reactor.launcher;
 
 import ink.reactor.kernel.Reactor;
-import ink.reactor.kernel.ReactorServer;
 import ink.reactor.kernel.logger.Logger;
 import ink.reactor.launcher.console.Console;
 import ink.reactor.launcher.console.JLineConsole;
@@ -53,7 +52,7 @@ public final class ReactorLauncher {
             return null;
         }
 
-        Reactor.setServer(new ReactorServer(
+        Reactor.setInstance(new Reactor(
             logger,
             new SimpleLoggerFactory(logger),
             new TickScheduler(),

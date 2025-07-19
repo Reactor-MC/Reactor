@@ -43,7 +43,7 @@ public final class NoCompressionDecoder extends ByteToMessageDecoder {
 
     @Override
     public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable cause) {
-        Reactor.getServer().logger().error("Error decoding packet", cause);
+        Reactor.get().logger().error("Error decoding packet", cause);
         ctx.close();
     }
 }

@@ -91,13 +91,13 @@ public final class NettyPlayerConnection extends SimpleChannelInboundHandler<Inb
     @Override
     public void channelActive(final ChannelHandlerContext ctx) {
         playerConnections.add(this);
-        Reactor.getServer().logger().info("Player connected");
+        Reactor.get().logger().info("Player connected");
     }
 
     @Override
     public void channelInactive(final ChannelHandlerContext ctx) {
         playerConnections.remove(this);
-        Reactor.getServer().logger().info("Player disconnected");
+        Reactor.get().logger().info("Player disconnected");
     }
 
     @Override

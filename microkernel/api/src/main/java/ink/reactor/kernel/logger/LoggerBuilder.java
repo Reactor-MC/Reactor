@@ -10,7 +10,7 @@ public final class LoggerBuilder {
     private final LoggerFactory factory;
 
     public LoggerBuilder() {
-        this.factory = Reactor.getServer().loggerFactory();
+        this.factory = Reactor.get().loggerFactory();
     }
 
     private String prefix, suffix;

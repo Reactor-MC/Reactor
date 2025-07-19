@@ -32,7 +32,7 @@ public final class SimpleEventBus implements EventBus {
     }
 
     public SimpleEventBus() {
-        this(Reactor.getServer().logger());
+        this(Reactor.get().logger());
     }
 
     @Override
