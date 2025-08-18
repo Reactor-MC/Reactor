@@ -1,6 +1,6 @@
 package ink.reactor.protocol.bridge.common.handler;
 
-import ink.reactor.protocol.api.PlayerConnection;
+import ink.reactor.protocol.api.connection.PlayerConnection;
 import ink.reactor.protocol.api.buffer.reader.ReaderBuffer;
 import ink.reactor.protocol.api.packet.PacketHandler;
 
@@ -15,8 +15,10 @@ public final class ArrayHandlerStorage implements MutablePacketHandlerStorage {
 
     @Override
     public void callHandlers(final PlayerConnection connection, final ReaderBuffer readerBuffer) {
+        final int startIndex = readerBuffer.getIndex();
         for (final PacketHandler handler : handlers) {
             handler.handle(connection, readerBuffer);
+            readerBuffer.setIndex(startIndex);
         }
     }
 

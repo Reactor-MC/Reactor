@@ -1,6 +1,6 @@
 package ink.reactor.protocol.bridge.common.handler;
 
-import ink.reactor.protocol.api.PlayerConnection;
+import ink.reactor.protocol.api.connection.PlayerConnection;
 import ink.reactor.protocol.api.buffer.reader.ReaderBuffer;
 import ink.reactor.protocol.api.packet.PacketHandler;
 import lombok.RequiredArgsConstructor;

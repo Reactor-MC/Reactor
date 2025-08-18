@@ -1,19 +1,28 @@
 package ink.reactor.protocol.api;
 
-import lombok.Getter;
+import ink.reactor.protocol.api.connection.process.ConnectionsInProcess;
+
+import java.util.Map;
 
 public abstract class Protocol {
-    @Getter
     private static Protocol instance;
 
     public abstract ProtocolBridge getCommonBridge();
     public abstract ProtocolBridge getBridge(final int version);
-    public abstract void registerBridge(final int version, ProtocolBridge bridge);
+    public abstract Map<Integer, ProtocolBridge> getBridges();
 
-    public static void setInstance(final Protocol instance) {
+    public abstract ConnectionsInProcess getConnectionsInProcess();
+
+    public abstract void registerBridge(ProtocolBridge bridge, final int... versions);
+
+    public static void set(final Protocol instance) {
         if (Protocol.instance != null) {
             throw new IllegalStateException("Protocol instance is already set");
         }
         Protocol.instance = instance;
+    }
+
+    public static Protocol get() {
+        return instance;
     }
 }

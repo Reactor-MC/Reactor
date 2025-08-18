@@ -1,4 +1,4 @@
 dependencies {
     compileOnly(project(":protocol:api"))
-    compileOnly(project(":microkernel:api"))
+    compileOnly(project(":kernel:api"))
 }

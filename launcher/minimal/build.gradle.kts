@@ -8,8 +8,8 @@ dependencies {
     implementation(project(":protocol:bridge:common"))
     implementation(project(":protocol:bridge:v1.21"))
 
-    implementation(project(":microkernel:api"))
-    implementation(project(":microkernel:impl"))
+    implementation(project(":kernel:api"))
+    implementation(project(":kernel:micro"))
 
     implementation(project(":sdk:bundled"))
     implementation("org.jline:jline-terminal:3.30.4")

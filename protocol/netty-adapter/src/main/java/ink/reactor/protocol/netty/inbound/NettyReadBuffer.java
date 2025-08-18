@@ -118,8 +118,7 @@ public record NettyReadBuffer(ByteBuf buffer) implements ReaderBuffer {
             throw new DecoderException("The received encoded string buffer length is less than zero! Weird string!");
         }
 
-        final String string = buffer.toString(buffer.readerIndex(), stringLength, StandardCharsets.UTF_8);
-        buffer.readerIndex(buffer.readerIndex() + stringLength);
+        final String string = buffer.readString(stringLength, StandardCharsets.UTF_8);
 
         if (string.length() > maxLength) {
             throw new DecoderException("The received string length is longer than maximum allowed (" + stringLength + " > " + stringLength + ")");
@@ -146,14 +145,25 @@ public record NettyReadBuffer(ByteBuf buffer) implements ReaderBuffer {
     }
 
     @Override
-    public void skipTo(final int index) {
-        buffer.readerIndex(index + buffer.readerIndex());
+    public void setIndex(final int index) {
+        buffer.readerIndex(index);
     }
 
     @Override
     public int getIndex() {
         return buffer.readerIndex();
     }
+
+    @Override
+    public boolean isEmpty() {
+        return !buffer.isReadable();
+    }
+
+    @Override
+    public String toString() {
+        return buffer.toString();
+    }
+
 
     public static int readVarIntSafely(final ByteBuf buf) {
         int numRead = 0;
@@ -175,6 +185,6 @@ public record NettyReadBuffer(ByteBuf buffer) implements ReaderBuffer {
                 return result;
             }
         }
-        throw new RuntimeException("VarInt is too big");
+        return -1;
     }
 }

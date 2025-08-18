@@ -171,7 +171,12 @@ public final class BufferReader implements ReaderBuffer {
     }
 
     @Override
-    public void skipTo(int index) {
+    public boolean isEmpty() {
+        return buffer.length == 0;
+    }
+
+    @Override
+    public void setIndex(int index) {
         this.index = index;
     }
 }

@@ -127,11 +127,13 @@ public interface ReaderBuffer {
      * Sets the read position to the specified absolute index.
      * @param index the absolute position to set
      */
-    void skipTo(int index);
+    void setIndex(int index);
 
     /**
      * Gets the current read position in the buffer.
      * @return the current index
      */
     int getIndex();
+
+    boolean isEmpty();
 }

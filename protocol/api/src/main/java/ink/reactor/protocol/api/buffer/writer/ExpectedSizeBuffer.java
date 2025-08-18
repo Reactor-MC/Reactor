@@ -1,6 +1,5 @@
 package ink.reactor.protocol.api.buffer.writer;
 
-
 import java.nio.charset.StandardCharsets;
 import java.util.BitSet;
 import java.util.UUID;
@@ -12,7 +11,7 @@ import java.util.UUID;
  */
 public final class ExpectedSizeBuffer implements WriterBuffer {
 
-    public static final byte[] EMPTY_BUFFER = new byte[0];
+    public static final byte[] EMPTY = new byte[0];
 
     public final byte[] buffer;
     public int index = 0;

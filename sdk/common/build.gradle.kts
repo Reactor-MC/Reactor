@@ -4,5 +4,6 @@ plugins {
 
 dependencies {
     api(project(":protocol:api"))
-    api(project(":microkernel:api"))
+    api(project(":kernel:api"))
+    api(project(":minecraft-api"))
 }

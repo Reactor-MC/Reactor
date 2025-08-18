@@ -1,15 +1,17 @@
 package ink.reactor.protocol.netty.player;
 
-import ink.reactor.kernel.Reactor;
-import ink.reactor.protocol.api.ConnectionState;
-import ink.reactor.protocol.api.PlayerConnection;
+import ink.reactor.protocol.api.connection.ConnectionState;
+import ink.reactor.protocol.api.connection.PlayerConnection;
 import ink.reactor.protocol.api.Protocol;
 import ink.reactor.protocol.api.ProtocolBridge;
+import ink.reactor.protocol.api.packet.PacketOutbound;
 import ink.reactor.protocol.netty.inbound.InboundPacket;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.EventLoop;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
+
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
@@ -17,31 +19,51 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public final class NettyPlayerConnection extends SimpleChannelInboundHandler<InboundPacket> implements PlayerConnection {
 
-    private final Collection<NettyPlayerConnection> playerConnections;
-
     private final SocketChannel channel;
     private final EventLoop eventLoop;
 
-    private volatile ConnectionState connectionState;
+    private volatile ConnectionState connectionState = ConnectionState.HANDSHAKE;
 
-    private ProtocolBridge bridge = Protocol.getInstance().getCommonBridge();
+    private ProtocolBridge bridge = Protocol.get().getCommonBridge();
 
     @Override
     protected void channelRead0(final ChannelHandlerContext channelHandlerContext, final InboundPacket inboundPacket) {
-        bridge.execute(this, inboundPacket.data(), inboundPacket.id());
+        try {
+            bridge.execute(this, inboundPacket.data(), inboundPacket.id());
+        } catch (Exception e) {
+            disconnect(e.getMessage());
+        }
     }
 
     @Override
-    public void sendPacket(final Object packet) {
+    public void addPacketToQueue(final Collection<PacketOutbound> packets) {
+        // TODO: Implement packet queue
+    }
+
+    @Override
+    public void addPacketToQueue(final PacketOutbound packet) {
+        // TODO: Implement packet queue
+    }
+
+    @Override
+    public void sendPacket(final PacketOutbound packet) {
+        if (packet == null) {
+            return;
+        }
+
         if (eventLoop.inEventLoop()) {
-            channel.write(packet);
+            channel.writeAndFlush(packet);
             return;
         }
         eventLoop.execute(() -> channel.writeAndFlush(packet));
     }
 
     @Override
-    public void sendPackets(final Collection<Object> packets) {
+    public void sendPackets(final Collection<PacketOutbound> packets) {
+        if (packets == null || packets.isEmpty()) {
+            return;
+        }
+
         if (eventLoop.inEventLoop()) {
             for (final Object packet : packets) {
                 channel.write(packet);
@@ -59,17 +81,7 @@ public final class NettyPlayerConnection extends SimpleChannelInboundHandler<Inb
     }
 
     @Override
-    public void sendNowPacket(final Object packet) {
-        sendPacket(packet);
-    }
-
-    @Override
-    public void sendNowPackets(final Collection<Object> packets) {
-        sendPackets(packets);
-    }
-
-    @Override
-    public ProtocolBridge getProtocol() {
+    public ProtocolBridge getBridge() {
         return bridge;
     }
 
@@ -89,19 +101,24 @@ public final class NettyPlayerConnection extends SimpleChannelInboundHandler<Inb
     }
 
     @Override
-    public void channelActive(final ChannelHandlerContext ctx) {
-        playerConnections.add(this);
-        Reactor.get().logger().info("Player connected");
-    }
-
-    @Override
     public void channelInactive(final ChannelHandlerContext ctx) {
-        playerConnections.remove(this);
-        Reactor.get().logger().info("Player disconnected");
+        Protocol.get().getConnectionsInProcess().removeConnection(this);
     }
 
     @Override
-    public void close() {
+    public void disconnect() {
+        Protocol.get().getConnectionsInProcess().removeConnection(this);
         channel.close();
+    }
+
+    @Override
+    public void disconnect(final String reason) {
+        try {
+            if (connectionState == ConnectionState.LOGIN) {
+                sendPacket(bridge.getOutboundLoginPackets().createDisconnect(reason));
+            }
+        } finally {
+            disconnect();
+        }
     }
 }

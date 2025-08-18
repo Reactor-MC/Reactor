@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     implementation(project(":protocol:api"))
-    implementation(project(":microkernel:api"))
+    implementation(project(":kernel:api"))
 
     implementation("io.netty:netty-handler:4.2.2.Final")
 

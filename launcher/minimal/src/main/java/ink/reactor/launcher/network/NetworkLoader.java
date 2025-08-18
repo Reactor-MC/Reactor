@@ -65,7 +65,7 @@ public final class NetworkLoader {
             Math.max(1, section.getInt("tcp-fast-open-connections"))
         ));
 
-        Protocol.setInstance(new ReactorProtocol());
+        Protocol.set(new ReactorProtocol());
         BridgeV1_21.register();
 
         logger.info("Listening in: " + host + ":" + port);

@@ -10,13 +10,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-
-
 @RequiredArgsConstructor
 public final class PlayerChannelInitializer extends ChannelInitializer<SocketChannel> {
-
-    private final Collection<NettyPlayerConnection> playerConnections;
 
     private final boolean tcpFastOpen;
     private final int tcpFastOpenConnections;
@@ -37,7 +32,7 @@ public final class PlayerChannelInitializer extends ChannelInitializer<SocketCha
         socketChannel.pipeline()
             .addLast("timeout", new ReadTimeoutHandler(20))
             .addLast("decoder", new NoCompressionDecoder())
-            .addLast("connection", new NettyPlayerConnection(playerConnections, socketChannel, socketChannel.eventLoop()))
+            .addLast("connection", new NettyPlayerConnection(socketChannel, socketChannel.eventLoop()))
             .addLast("encoder", new NoCompressionEncoder());
     }
 }

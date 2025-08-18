@@ -2,7 +2,6 @@ package ink.reactor.sdk.bundled.config.yaml;
 
 import ink.reactor.sdk.bundled.config.AbstractConfigService;
 import ink.reactor.sdk.config.ConfigSection;
-import ink.reactor.sdk.config.ConfigService;
 import ink.reactor.sdk.config.GenericConfigSection;
 import ink.reactor.sdk.config.SaveOptions;
 import ink.reactor.sdk.config.exception.ConfigLoadException;
@@ -58,6 +57,7 @@ public final class YamlConfigService extends AbstractConfigService {
         final LoadSettings settings = LoadSettings.builder()
             .setParseComments(false)
             .build();
-        return loader = new Load(settings, new YamlCustomConstructor(settings));
+        loader = new Load(settings, new YamlCustomConstructor(settings));
+        return loader;
     }
 }

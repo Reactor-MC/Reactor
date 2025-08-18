@@ -1,7 +1,6 @@
 package ink.reactor.protocol.netty;
 
 import ink.reactor.kernel.logger.Logger;
-import ink.reactor.protocol.netty.player.NettyPlayerConnection;
 import ink.reactor.protocol.netty.player.PlayerChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -19,10 +18,6 @@ import io.netty.channel.uring.IoUringIoHandler;
 import io.netty.channel.uring.IoUringServerSocketChannel;
 import lombok.RequiredArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 @RequiredArgsConstructor
 public final class ServerConnection {
     private static final WriteBufferWaterMark SERVER_WRITE_MARK = new WriteBufferWaterMark(1 << 20, 1 << 21);
@@ -32,8 +27,6 @@ public final class ServerConnection {
     private ChannelFuture future;
 
     private final Logger logger;
-
-    private final List<NettyPlayerConnection> playerConnections = Collections.synchronizedList(new ArrayList<>());
 
     public void connect(final NettyConfig config) throws InterruptedException {
         final int workerThreadCount = config.workerThreadCount();
@@ -61,7 +54,7 @@ public final class ServerConnection {
 
         future = new ServerBootstrap().channel(socketChannel)
             .childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, SERVER_WRITE_MARK)
-            .childHandler(new PlayerChannelInitializer(playerConnections, config.tcpFastOpen(), config.tcpFastOpenConnections()))
+            .childHandler(new PlayerChannelInitializer(config.tcpFastOpen(), config.tcpFastOpenConnections()))
             .group(bossGroup, workerGroup)
             .localAddress(config.ip(), config.port())
             .bind()

@@ -2,7 +2,7 @@ package ink.reactor.protocol.netty.outbound.encoder;
 
 import ink.reactor.protocol.api.buffer.DataSize;
 import ink.reactor.protocol.api.buffer.writer.ExpectedSizeBuffer;
-import ink.reactor.protocol.netty.outbound.PacketOutbound;
+import ink.reactor.protocol.api.packet.PacketOutbound;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundHandlerAdapter;

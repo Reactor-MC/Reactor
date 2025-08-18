@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-// We need create a custom constructor for make all keys strings and transform map into ConfigSection :)
+// We need create a custom constructor for make all keys strings and transform map into ConfigSection
 final class YamlCustomConstructor extends StandardConstructor {
     public YamlCustomConstructor(final LoadSettings settings) {
         super(settings);

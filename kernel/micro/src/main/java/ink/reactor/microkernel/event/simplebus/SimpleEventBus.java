@@ -1,6 +1,5 @@
 package ink.reactor.microkernel.event.simplebus;
 
-import ink.reactor.kernel.Reactor;
 import ink.reactor.kernel.event.EventBus;
 import ink.reactor.kernel.event.EventExecutor;
 import ink.reactor.kernel.event.ListenerPhase;
@@ -12,8 +11,8 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 @RequiredArgsConstructor
@@ -26,13 +25,9 @@ public final class SimpleEventBus implements EventBus {
     private final MethodListenerLoader methodListenerLoader;
 
     public SimpleEventBus(final Logger logger) {
-        this.owners = new HashMap<>();
-        this.eventsStorage = new HashMap<>();
+        this.owners = new ConcurrentHashMap<>();
+        this.eventsStorage = new ConcurrentHashMap<>();
         this.methodListenerLoader = new MethodListenerLoader(logger);
-    }
-
-    public SimpleEventBus() {
-        this(Reactor.get().logger());
     }
 
     @Override
