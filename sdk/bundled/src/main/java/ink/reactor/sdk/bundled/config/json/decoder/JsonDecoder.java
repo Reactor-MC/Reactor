@@ -2,8 +2,8 @@ package ink.reactor.sdk.bundled.config.json.decoder;
 
 import ink.reactor.protocol.api.buffer.writer.DynamicSizeBuffer;
 import ink.reactor.sdk.bundled.config.json.decoder.exception.JsonDecoderException;
-import ink.reactor.sdk.config.ConfigSection;
-import ink.reactor.sdk.config.GenericConfigSection;
+import ink.reactor.sdk.config.section.ConfigSection;
+import ink.reactor.sdk.config.section.MapConfigSection;
 import lombok.Getter;
 
 import java.util.*;
@@ -23,8 +23,8 @@ public class JsonDecoder {
         return readSection();
     }
 
-    private GenericConfigSection readSection() {
-        final GenericConfigSection section = new GenericConfigSection(new LinkedHashMap<>());
+    private MapConfigSection readSection() {
+        final MapConfigSection section = new MapConfigSection(new LinkedHashMap<>());
 
         skipUntilFindValidChar();
         if (buffer[index++] != '{') {

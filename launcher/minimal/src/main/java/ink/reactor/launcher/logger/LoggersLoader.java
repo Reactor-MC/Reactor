@@ -10,8 +10,8 @@ import ink.reactor.launcher.logger.type.FileLogger;
 import ink.reactor.launcher.logger.type.NoneLogger;
 import ink.reactor.launcher.logger.type.ReactorLogger;
 import ink.reactor.microkernel.logger.JavaLoggerFormatter;
-import ink.reactor.sdk.config.ConfigSection;
 import ink.reactor.sdk.config.ConfigService;
+import ink.reactor.sdk.config.section.ConfigSection;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
@@ -49,7 +49,7 @@ public final class LoggersLoader {
             return new NoneLogger();
         }
 
-        final ConfigSection prefix = section.getSection("prefix");
+        final ConfigSection prefix = section.getOrCreateSection("prefix");
         final String dateFormatter = prefix.getString("date-formatter");
         return new ReactorLogger(
             new JavaLoggerFormatter(),
@@ -84,16 +84,24 @@ public final class LoggersLoader {
             channel
         );
 
-        final ConfigSection autoFlush = logsSection.getSection("auto-flush");
-        if (autoFlush != null && autoFlush.getBoolean("enable")) {
-            FileAutoFlushTask.createThread(
-                fileWriter,
-                autoFlush.getInt("min-buffer-size-to-flush"),
-                autoFlush.getInt("every-seconds")
-            ).start();
+        final ConfigSection autoFlush = logsSection.getOrCreateSection("auto-flush");
+        final FileLogProcessorThread processor = new FileLogProcessorThread(
+            fileWriter,
+            autoFlush.getInt("every-seconds")
+        );
+
+        if (autoFlush.getBoolean("enable")) {
+            processor.start();
         }
 
-        ReactorLauncher.STOP_TASKS.add(fileWriter::flush);
+        ReactorLauncher.STOP_TASKS.add(() -> {
+            processor.shutdown();
+            try {
+                processor.join(5000);
+            } catch (InterruptedException ignored) {}
+            fileWriter.close();
+        });
+
         ReactorLauncher.STOP_TASKS.add(fileWriter::close);
 
         return new FileLogger(loggerLevels, fileWriter);

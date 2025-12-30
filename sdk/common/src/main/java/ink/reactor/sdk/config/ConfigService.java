@@ -1,5 +1,7 @@
 package ink.reactor.sdk.config;
 
+import ink.reactor.sdk.config.section.ConfigSection;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Collection;

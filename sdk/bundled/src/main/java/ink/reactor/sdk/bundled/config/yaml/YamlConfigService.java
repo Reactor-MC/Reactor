@@ -1,11 +1,11 @@
 package ink.reactor.sdk.bundled.config.yaml;
 
 import ink.reactor.sdk.bundled.config.AbstractConfigService;
-import ink.reactor.sdk.config.ConfigSection;
-import ink.reactor.sdk.config.GenericConfigSection;
 import ink.reactor.sdk.config.SaveOptions;
 import ink.reactor.sdk.config.exception.ConfigLoadException;
 import ink.reactor.sdk.config.exception.ConfigSaveException;
+import ink.reactor.sdk.config.section.ConfigSection;
+import ink.reactor.sdk.config.section.MapConfigSection;
 import org.snakeyaml.engine.v2.api.Load;
 import org.snakeyaml.engine.v2.api.LoadSettings;
 
@@ -28,9 +28,9 @@ public final class YamlConfigService extends AbstractConfigService {
         try(final BufferedReader bufferedReader = Files.newBufferedReader(path)) {
             final Object object = getLoader().loadFromReader(bufferedReader);
             if (!(object instanceof Map<?,?>)) {
-                return new GenericConfigSection(Map.of("", object));
+                return new MapConfigSection(Map.of("", object));
             }
-            return new GenericConfigSection((Map<String, Object>)object);
+            return new MapConfigSection((Map<String, Object>)object);
         } catch (IOException e) {
             throw new ConfigLoadException("Error on load yaml file. Path: " + path, e);
         }

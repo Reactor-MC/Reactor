@@ -8,19 +8,19 @@ import java.util.Map;
 
 @UtilityClass
 public final class ConfigServiceRegistry {
-    private static final Map<String, ConfigService> PROVIDERS = new HashMap<>();
+    private static final Map<String, ConfigService> SERVICES = new HashMap<>();
 
-    public static ConfigService getProvider(final String configFormat) {
-        final ConfigService provider = PROVIDERS.get(configFormat);
+    public static ConfigService getService(final String configFormat) {
+        final ConfigService provider = SERVICES.get(configFormat);
         if (provider == null) {
             throw new UnsupportedConfigFormatException(configFormat);
         }
         return provider;
     }
 
-    public static void addProvider(final ConfigService provider) {
-        for (final String fileExtension : provider.fileExtensions()) {
-            PROVIDERS.put(fileExtension, provider);
+    public static void addService(final ConfigService service) {
+        for (final String fileExtension : service.fileExtensions()) {
+            SERVICES.put(fileExtension, service);
         }
     }
 }

@@ -7,8 +7,8 @@ import ink.reactor.protocol.api.Protocol;
 import ink.reactor.protocol.bridge.common.ReactorProtocol;
 import ink.reactor.protocol.netty.NettyConfig;
 import ink.reactor.protocol.netty.ServerConnection;
-import ink.reactor.sdk.config.ConfigSection;
 import ink.reactor.sdk.config.ConfigService;
+import ink.reactor.sdk.config.section.ConfigSection;
 import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;

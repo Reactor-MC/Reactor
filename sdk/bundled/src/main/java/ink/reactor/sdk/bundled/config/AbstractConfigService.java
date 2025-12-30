@@ -1,12 +1,14 @@
 package ink.reactor.sdk.bundled.config;
 
-import ink.reactor.sdk.config.ConfigSection;
 import ink.reactor.sdk.config.ConfigService;
+import ink.reactor.sdk.config.section.ConfigSection;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
 public abstract class AbstractConfigService implements ConfigService {
 

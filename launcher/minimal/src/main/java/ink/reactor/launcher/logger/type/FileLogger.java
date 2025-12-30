@@ -10,37 +10,37 @@ public final class FileLogger {
     private final FileWriter fileWriter;
 
     public void debug(final String message) {
-        if (loggerLevels.debug() && fileWriter.canWrite()) {
+        if (loggerLevels.debug()) {
             fileWriter.write(message.getBytes());
         }
     }
 
     public void log(final String message) {
-        if (loggerLevels.log() && fileWriter.canWrite()) {
+        if (loggerLevels.log()) {
             fileWriter.write(message.getBytes());
         }
     }
 
     public void info(final String message) {
-        if (loggerLevels.info() && fileWriter.canWrite()) {
+        if (loggerLevels.info()) {
             fileWriter.write(message.getBytes());
         }
     }
 
     public void warn(final String message) {
-        if (loggerLevels.warn() && fileWriter.canWrite()) {
+        if (loggerLevels.warn()) {
             fileWriter.write(message.getBytes());
         }
     }
 
     public void error(final String message) {
-        if (loggerLevels.error() && fileWriter.canWrite()) {
+        if (loggerLevels.error()) {
             fileWriter.write(message.getBytes());
         }
     }
 
     public void error(final String message, final Throwable throwable) {
-        if (loggerLevels.error() && fileWriter.canWrite()) {
+        if (loggerLevels.error()) {
             fileWriter.write(message.getBytes());
             fileWriter.write(('\n' + throwable.toString()).getBytes());
 

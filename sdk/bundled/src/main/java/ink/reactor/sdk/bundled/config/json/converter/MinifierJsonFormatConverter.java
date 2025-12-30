@@ -1,6 +1,6 @@
 package ink.reactor.sdk.bundled.config.json.converter;
 
-import ink.reactor.sdk.config.ConfigSection;
+import ink.reactor.sdk.config.section.ConfigSection;
 
 import java.util.Collection;
 import java.util.Map;

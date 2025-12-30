@@ -2,8 +2,8 @@ package ink.reactor.sdk.bundled.test.json;
 
 import ink.reactor.sdk.bundled.config.json.converter.MinifierJsonFormatConverter;
 import ink.reactor.sdk.bundled.config.json.decoder.JsonDecoder;
-import ink.reactor.sdk.config.ConfigSection;
-import ink.reactor.sdk.config.GenericConfigSection;
+import ink.reactor.sdk.config.section.ConfigSection;
+import ink.reactor.sdk.config.section.MapConfigSection;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -33,15 +33,15 @@ public final class JsonTest {
     }
 
     private ConfigSection createExampleSection() {
-        final ConfigSection section = new GenericConfigSection();
+        final ConfigSection section = new MapConfigSection();
         section.set("string", "Hello World!");
 
-        final ConfigSection numbers = new GenericConfigSection();
+        final ConfigSection numbers = new MapConfigSection();
         numbers.set("int", 1000);
         numbers.set("exponential", 1e3);
         numbers.set("decimal", 3.14159);
 
-        final GenericConfigSection sectionArrays = new GenericConfigSection();
+        final MapConfigSection sectionArrays = new MapConfigSection();
         sectionArrays.set("subsection1", "Hi");
         final List<ConfigSection> listSections = new ArrayList<>();
         listSections.add(sectionArrays);

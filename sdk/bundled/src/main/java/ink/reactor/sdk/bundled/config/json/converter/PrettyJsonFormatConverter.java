@@ -1,6 +1,6 @@
 package ink.reactor.sdk.bundled.config.json.converter;
 
-import ink.reactor.sdk.config.ConfigSection;
+import ink.reactor.sdk.config.section.ConfigSection;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;

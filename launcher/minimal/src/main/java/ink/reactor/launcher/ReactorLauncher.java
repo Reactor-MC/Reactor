@@ -21,7 +21,7 @@ public final class ReactorLauncher {
 
     public static final Collection<Runnable> STOP_TASKS = new ArrayList<>();
 
-    public static void main(final String[] args)  {
+    static void main(final String[] args)  {
         final Console console = ReactorLauncher.startServer();
         if (console != null) {
             console.run();
@@ -31,11 +31,7 @@ public final class ReactorLauncher {
     private static Console startServer() {
         final long start = System.currentTimeMillis();
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            for (final Runnable runnable : STOP_TASKS) {
-                runnable.run();
-            }
-        }));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> STOP_TASKS.forEach(Runnable::run)));
 
         final Console console = JLineConsole.createConsole();
         if (console == null) {
@@ -43,8 +39,8 @@ public final class ReactorLauncher {
         }
 
         final ConfigService configService = new YamlConfigService();
-        ConfigServiceRegistry.addProvider(configService);
-        ConfigServiceRegistry.addProvider(new JsonConfigService());
+        ConfigServiceRegistry.addService(configService);
+        ConfigServiceRegistry.addService(new JsonConfigService());
 
         final Logger logger = new LoggersLoader(console.getTerminal().writer()).load(configService);
 

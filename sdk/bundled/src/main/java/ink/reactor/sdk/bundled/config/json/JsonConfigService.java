@@ -5,11 +5,11 @@ import ink.reactor.sdk.bundled.config.json.converter.MinifierJsonFormatConverter
 import ink.reactor.sdk.bundled.config.json.converter.PrettyJsonFormatConverter;
 import ink.reactor.sdk.bundled.config.json.decoder.JsonDecoder;
 import ink.reactor.sdk.bundled.config.json.decoder.exception.JsonDecoderException;
-import ink.reactor.sdk.config.ConfigSection;
-import ink.reactor.sdk.config.GenericConfigSection;
 import ink.reactor.sdk.config.SaveOptions;
 import ink.reactor.sdk.config.exception.ConfigLoadException;
 import ink.reactor.sdk.config.exception.ConfigSaveException;
+import ink.reactor.sdk.config.section.ConfigSection;
+import ink.reactor.sdk.config.section.MapConfigSection;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,7 +33,7 @@ public final class JsonConfigService extends AbstractConfigService {
         final JsonDecoder jsonDecoder = new JsonDecoder(buffer);
         try(final FileInputStream inputStream = new FileInputStream(file)) {
             if (inputStream.read(buffer) == -1) {
-                return new GenericConfigSection();
+                return new MapConfigSection();
             }
             return jsonDecoder.decode();
         } catch (IOException e) {

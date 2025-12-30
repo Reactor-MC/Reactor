@@ -47,7 +47,6 @@ logs:
 
   auto-flush:
     enable: true
-    min-buffer-size-to-flush: 1024
     interval-seconds: 10
 
   gzip:

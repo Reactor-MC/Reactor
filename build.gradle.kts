@@ -13,14 +13,15 @@ subprojects {
     }
 
     dependencies {
-        compileOnly("org.projectlombok:lombok:1.18.38")
-        annotationProcessor("org.projectlombok:lombok:1.18.38")
+        compileOnly("org.projectlombok:lombok:1.18.42")
+        annotationProcessor("org.projectlombok:lombok:1.18.42")
+        compileOnly("org.jetbrains:annotations:26.0.2")
 
-        testCompileOnly("org.projectlombok:lombok:1.18.38")
-        testAnnotationProcessor("org.projectlombok:lombok:1.18.38")
+        testCompileOnly("org.projectlombok:lombok:1.18.42")
+        testAnnotationProcessor("org.projectlombok:lombok:1.18.42")
 
-        testImplementation(platform("org.junit:junit-bom:5.10.0"))
-        testImplementation("org.junit.jupiter:junit-jupiter")
+        testImplementation("org.junit.jupiter:junit-jupiter:6.0.0")
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     }
 
     tasks.test {
@@ -33,10 +34,10 @@ allprojects {
 
     tasks.withType<JavaCompile> {
         options.encoding = Charsets.UTF_8.name()
-        options.release.set(24)
+        options.release.set(25)
     }
 
     configure<JavaPluginExtension> {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(24))
+        toolchain.languageVersion.set(JavaLanguageVersion.of(25))
     }
 }

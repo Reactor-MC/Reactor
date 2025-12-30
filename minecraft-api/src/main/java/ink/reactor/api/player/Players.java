@@ -13,7 +13,7 @@ public final class Players {
     private static final Map<UUID, Player> PLAYERS_PER_UUID = new ConcurrentHashMap<>();
 
     public static Collection<Player> getPlayers() {
-        return new ArrayList<>(PLAYERS);
+        return PLAYERS;
     }
 
     public static void forEach(final Consumer<Player> consumer) {

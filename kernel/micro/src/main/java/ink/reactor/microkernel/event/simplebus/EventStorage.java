@@ -21,6 +21,13 @@ final class EventStorage {
     }
 
     public void addListener(final RegisteredListener listener) {
+        if (listener.executor() == null) {
+            throw new IllegalStateException(
+                "RegisteredListener has null executor: event="
+                    + listener.eventClass() + " phase=" + listener.phase()
+            );
+        }
+
         final int ordinal = listener.phase().ordinal();
         ListenerStorage listenerStorage = listenersPerPhase[ordinal];
         if (listenerStorage == null) {
@@ -41,7 +48,9 @@ final class EventStorage {
 
             final RegisteredListener[] listeners = listenerStorage.getListeners();
             for (final RegisteredListener listener : listeners) {
-                listener.executor().execute(event);
+                if (listener != null) {
+                    listener.executor().execute(event);
+                }
             }
         }
     }

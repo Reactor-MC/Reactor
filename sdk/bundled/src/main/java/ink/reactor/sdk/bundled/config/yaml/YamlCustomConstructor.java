@@ -1,6 +1,6 @@
 package ink.reactor.sdk.bundled.config.yaml;
 
-import ink.reactor.sdk.config.GenericConfigSection;
+import ink.reactor.sdk.config.section.MapConfigSection;
 import org.snakeyaml.engine.v2.api.LoadSettings;
 import org.snakeyaml.engine.v2.constructor.StandardConstructor;
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
@@ -32,7 +32,7 @@ final class YamlCustomConstructor extends StandardConstructor {
             Object value = constructObject(valueNode);
 
             if (value instanceof Map<?,?>) {
-                value = new GenericConfigSection((Map<String, Object>) value);
+                value = new MapConfigSection((Map<String, Object>) value);
             }
 
             if (keyNode.isRecursive()) {
