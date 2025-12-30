@@ -47,10 +47,9 @@ final class EventStorage {
             listenerStorage.ensureSorted();
 
             final RegisteredListener[] listeners = listenerStorage.getListeners();
-            for (final RegisteredListener listener : listeners) {
-                if (listener != null) {
-                    listener.executor().execute(event);
-                }
+            final int size = listenerStorage.getSize();
+            for (int i = 0; i < size; i++) {
+                listeners[i].executor().execute(event);
             }
         }
     }
