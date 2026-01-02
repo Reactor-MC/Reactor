@@ -9,9 +9,7 @@ import ink.reactor.microkernel.event.loader.MethodListenerLoader;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -25,7 +23,7 @@ public final class SimpleEventBus implements EventBus {
     private final MethodListenerLoader methodListenerLoader;
 
     public SimpleEventBus(final Logger logger) {
-        this.owners = new ConcurrentHashMap<>();
+        this.owners = Collections.synchronizedMap(new WeakHashMap<>());
         this.eventsStorage = new ConcurrentHashMap<>();
         this.methodListenerLoader = new MethodListenerLoader(logger);
     }
