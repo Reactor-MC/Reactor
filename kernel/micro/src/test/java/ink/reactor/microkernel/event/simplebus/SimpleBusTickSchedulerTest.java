@@ -46,7 +46,7 @@ public class SimpleBusTickSchedulerTest {
 
         storage.add(listener1);
         storage.add(listener2);
-        Assertions.assertEquals(2, storage.getSize());
+        Assertions.assertEquals(2, storage.size);
     }
 
     @Test
