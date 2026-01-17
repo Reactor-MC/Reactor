@@ -1,15 +1,13 @@
 package ink.reactor.microkernel.event.simplebus;
 
-import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.Comparator;
 
-@Getter
 final class ListenerStorage {
-    private RegisteredListener[] listeners;
-    private int size;
-    private boolean sorted;
+    public RegisteredListener[] listeners;
+    public int size;
+    public boolean sorted;
 
     public ListenerStorage(RegisteredListener listener) {
         this.listeners = new RegisteredListener[] {listener};

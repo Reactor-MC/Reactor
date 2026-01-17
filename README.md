@@ -1,6 +1,6 @@
 <p align="center">
   <br/>
-  <a href="https://reactor.ink">Reactor</a> is a Minecraft Server written in Java &mdash;
+  <a href="https://reactor.ink">Reactor</a> is a Hytale Server written in Java and Kotlin &mdash;
   <br/>
   fast, modular and scalable.
   <br/><br/>
@@ -15,7 +15,12 @@
 
 ## About
 
-Reactor is a high-performance Minecraft server platform developed in Java, designed to redefine the current landscape of Minecraft server software. Emphasizing efficiency, scalability, and modular architecture, Reactor sets a new standard for modern server solutions.
+Reactor is a high-performance Hytale server platform developed in Java, designed to redefine the current landscape of Hytale server software. Emphasizing efficiency, scalability, and modular architecture, Reactor sets a new standard for modern server solutions.
 
 > [!WARNING]
 > This project is under heavy development! Not all features are done!
+>
+> [!NOTE]
+> There is no sandbox in the plugins because, ultimately, it is a Hytale server, nothing very important that needs security.
+> This means that plugins will be able to access other plugins (configuration and jar).
+> Perhaps it will be implemented in the future, but for now it is not a priority.

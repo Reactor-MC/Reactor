@@ -1,6 +1,7 @@
 package ink.reactor.microkernel.logger;
 
 import ink.reactor.kernel.logger.LoggerFormatter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Formatter;
 
@@ -16,7 +17,7 @@ public final class JavaLoggerFormatter implements LoggerFormatter {
     }
 
     @Override
-    public String format(final String text, final Object... objects) {
+    public @NotNull String format(final @NotNull String text, final Object... objects) {
         return (objects == null || objects.length == 0) ? text : formatter.format(text, objects).toString();
     }
 }

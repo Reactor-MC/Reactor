@@ -2,6 +2,7 @@ package ink.reactor.microkernel.logger;
 
 import ink.reactor.kernel.logger.Logger;
 import ink.reactor.kernel.logger.LoggerFormatter;
+import org.jspecify.annotations.NonNull;
 
 public final class PrintlnLogger implements Logger {
     private final JavaLoggerFormatter loggerFormatter = new JavaLoggerFormatter();
@@ -27,12 +28,12 @@ public final class PrintlnLogger implements Logger {
     }
 
     @Override
-    public void warn(final String message) {
+    public void warn(final @NonNull String message) {
         System.out.println("[WARN]" + message);
     }
 
     @Override
-    public void error(final String message) {
+    public void error(final @NonNull String message) {
         System.out.println("[ERROR]" + message);
     }
 

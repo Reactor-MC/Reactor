@@ -5,7 +5,6 @@ import ink.reactor.kernel.event.Listener;
 import ink.reactor.kernel.event.ListenerPhase;
 import ink.reactor.kernel.logger.Logger;
 import ink.reactor.microkernel.event.executor.ListenerMethodHandleExecutor;
-import lombok.RequiredArgsConstructor;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -13,10 +12,13 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
 public final class MethodListenerLoader {
 
     private final Logger logger;
+
+    public MethodListenerLoader(final Logger logger) {
+        this.logger = logger;
+    }
 
     public List<MethodListener> load(final Object object) {
         final Class<?> sourceClass = object.getClass();

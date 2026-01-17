@@ -1,7 +1,5 @@
 package ink.reactor.launcher.logger.file;
 
-import lombok.Getter;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -13,7 +11,6 @@ public final class FileWriter {
     private final FileChannel channel;
     private final ByteBuffer internalBuffer;
 
-    @Getter
     private final BlockingQueue<byte[]> queue = new ArrayBlockingQueue<>(2048);
     private long currentFileLength;
 
@@ -21,6 +18,10 @@ public final class FileWriter {
         this.maxFileLength = maxFileLength;
         this.channel = channel;
         this.internalBuffer = ByteBuffer.allocateDirect(bufferSize);
+    }
+
+    public BlockingQueue<byte[]> getQueue() {
+        return queue;
     }
 
     public boolean canWrite() {

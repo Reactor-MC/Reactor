@@ -2,45 +2,47 @@ package ink.reactor.microkernel.logger;
 
 import ink.reactor.kernel.logger.Logger;
 import ink.reactor.kernel.logger.LoggerFormatter;
+import org.jetbrains.annotations.NotNull;
 
 public record WrappedLogger(
     String suffix,
     String prefix,
-    Logger logger
+    Logger logger,
+    LoggerFormatter loggerFormatter
 ) implements Logger {
 
     @Override
-    public LoggerFormatter getLoggerFormatter() {
-        return logger.getLoggerFormatter();
+    public @NotNull LoggerFormatter getLoggerFormatter() {
+        return loggerFormatter;
     }
 
     @Override
-    public void debug(final String message) {
+    public void debug(final @NotNull String message) {
         logger.debug(prefix + message + suffix);
     }
 
     @Override
-    public void log(final String message) {
+    public void log(final @NotNull String message) {
         logger.log(prefix + message + suffix);
     }
 
     @Override
-    public void info(final String message) {
+    public void info(final @NotNull String message) {
         logger.info(prefix + message + suffix);
     }
 
     @Override
-    public void warn(final String message) {
+    public void warn(final @NotNull String message) {
         logger.warn(prefix + message + suffix);
     }
 
     @Override
-    public void error(final String message) {
+    public void error(final @NotNull String message) {
         logger.error(prefix + message + suffix);
     }
 
     @Override
-    public void error(final String message, final Throwable throwable) {
+    public void error(final @NotNull String message, final @NotNull Throwable throwable) {
         logger.error(prefix + message + suffix, throwable);
     }
 }

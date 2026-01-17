@@ -5,9 +5,8 @@ import java.lang.invoke.MethodHandle;
 import ink.reactor.kernel.event.EventExecutor;
 import ink.reactor.kernel.event.special.Cancellable;
 import ink.reactor.kernel.logger.Logger;
-import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
-@RequiredArgsConstructor
 public final class ListenerMethodHandleExecutor implements EventExecutor {
 
     private final Logger logger;
@@ -15,8 +14,15 @@ public final class ListenerMethodHandleExecutor implements EventExecutor {
     private final boolean ignoreCancelled;
     private final MethodHandle methodHandle;
 
+    public ListenerMethodHandleExecutor(final Logger logger, final Object listener, final boolean ignoreCancelled, final MethodHandle methodHandle) {
+        this.logger = logger;
+        this.listener = listener;
+        this.ignoreCancelled = ignoreCancelled;
+        this.methodHandle = methodHandle;
+    }
+
     @Override
-    public void execute(final Object event) {
+    public void execute(final @NotNull Object event) {
         if (event instanceof Cancellable cancellable && cancellable.isCancelled() && !ignoreCancelled) {
             return;
         }

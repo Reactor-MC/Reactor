@@ -1,30 +1,32 @@
 enable: true
 
 prefix:
-  # Time format is specified in https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns
-  date-formatter: "HH:mm:ss"
+  # Pattern based on java.time.format.DateTimeFormatter
+  dateFormatter: "HH:mm:ss"
 
+  # Available placeholders: %time%
   debug: "[DEBUG %time%] "
-  log: "[LOG %time%] "
-  info: "[INFO %time%] "
-  warn: "[WARN %time%] "
+  log:   "[LOG %time%] "
+  info:  "[INFO %time%] "
+  warn:  "[WARN %time%] "
   error: "[ERROR %time%] "
 
 console:
   enable: true
+
   levels:
-    debug: true
-    log: true
-    info: true
-    warn: true
+    debug: false
+    log:   true
+    info:  true
+    warn:  true
     error: true
 
+  # ANSI Color styles for console output.
+  # Use standard ANSI codes (e.g., \u001B[31m for Red).
   styles:
     debug:
       prefix: "\u001B[32m" # Green
-      text: "\u001B[0m" # Reset colors
-      # To set text with the same color as prefix, remove text section and add:
-      # after-text: "\u001B[0m"
+      text: "\u001B[0m"    # Reset
     log:
       prefix: "\u001B[36m" # Cyan
       text: "\u001B[0m"
@@ -36,28 +38,31 @@ console:
       text: "\u001B[0m"
     error:
       prefix: "\u001B[31m" # Red
-      text: "\u001B[31m"
-      after-text: "\u001B[0m"
+      text: "\u001B[31m"   # Red text
+      afterText: "\u001B[0m"
 
 logs:
   enable: true
+  logsFolder: "logs"
 
-  buffer-size: 8192
-  max-file-size: 5e6 # 5MB
+  # Performance settings
+  bufferSize: 8192
 
-  auto-flush:
+  # Max size before rotation/compression (5MB).
+  maxFileSize: 5e6
+
+  autoFlush:
     enable: true
-    interval-seconds: 10
+    interval: 10
 
+  # Automatic compression for old log files
   gzip:
     enable: true
-    level: 6 # 0 (Faster) -> 9 (Best compression)
-
-  logs-folder: "logs"
+    level: 6 # 0 (No compression) to 9 (Max compression)
 
   levels:
-    debug: false
-    log: true
-    info: true
-    warn: true
+    debug: true # Usually useful to keep debug in files
+    log:   true
+    info:  true
+    warn:  true
     error: true

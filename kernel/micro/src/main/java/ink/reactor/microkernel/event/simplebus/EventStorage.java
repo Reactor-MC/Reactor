@@ -3,7 +3,7 @@ package ink.reactor.microkernel.event.simplebus;
 import ink.reactor.kernel.event.ListenerPhase;
 
 final class EventStorage {
-    private static final int LISTENER_PHASES_SIZE = ListenerPhase.values().length;
+    private static final int LISTENER_PHASES_SIZE = ListenerPhase.getEntries().size();
 
     private final ListenerStorage[] listenersPerPhase = new ListenerStorage[LISTENER_PHASES_SIZE];
 
@@ -13,7 +13,7 @@ final class EventStorage {
         if (listenerStorage == null || listenerStorage.isEmpty()) {
             return;
         }
-        if (listenerStorage.getSize() == 1 && listenerStorage.getListeners()[0].equals(listener)) {
+        if (listenerStorage.size == 1 && listenerStorage.listeners[0].equals(listener)) {
             listenersPerPhase[ordinal] = null;
             return;
         }
@@ -46,8 +46,8 @@ final class EventStorage {
 
             listenerStorage.ensureSorted();
 
-            final RegisteredListener[] listeners = listenerStorage.getListeners();
-            final int size = listenerStorage.getSize();
+            final RegisteredListener[] listeners = listenerStorage.listeners;
+            final int size = listenerStorage.size;
             for (int i = 0; i < size; i++) {
                 listeners[i].executor().execute(event);
             }

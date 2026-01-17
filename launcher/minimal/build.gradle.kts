@@ -3,13 +3,10 @@ plugins {
 }
 
 dependencies {
-    implementation(project(":protocol:api"))
-    implementation(project(":protocol:netty-adapter"))
-    implementation(project(":protocol:bridge:common"))
-    implementation(project(":protocol:bridge:v1.21"))
-
     implementation(project(":kernel:api"))
     implementation(project(":kernel:micro"))
+
+    implementation(kotlin("test"))
 
     implementation(project(":sdk:bundled"))
     implementation("org.jline:jline-terminal:3.30.4")

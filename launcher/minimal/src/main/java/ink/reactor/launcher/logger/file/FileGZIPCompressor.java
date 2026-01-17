@@ -15,7 +15,7 @@ import java.util.zip.GZIPOutputStream;
 
 public final class FileGZIPCompressor {
 
-    public static void compress(final Path filePath, final int gzipLevel) throws IOException {
+    public static void compress(final Path filePath, int gzipLevel) throws IOException {
         final Path parentPath = filePath.getParent();
 
         final BasicFileAttributes attributes = Files.readAttributes(filePath, BasicFileAttributes.class);
@@ -32,6 +32,10 @@ public final class FileGZIPCompressor {
         if (gzipLevel == -1) {
             Files.move(filePath, Path.of(fileName + ".log"));
             return;
+        }
+
+        if (gzipLevel > 9) {
+            gzipLevel = 9;
         }
 
         try (FileChannel sourceChannel = FileChannel.open(filePath, StandardOpenOption.READ)) {

@@ -3,24 +3,28 @@ package ink.reactor.microkernel.logger;
 import ink.reactor.kernel.logger.Logger;
 import ink.reactor.kernel.logger.LoggerBuilder;
 import ink.reactor.kernel.logger.LoggerFactory;
-import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
-@RequiredArgsConstructor
 public class SimpleLoggerFactory implements LoggerFactory {
 
-    private final Logger defaultLogger;
+    private final @NotNull Logger defaultLogger;
 
-    @Override
-    public Logger createLogger(final String prefix) {
-        return new WrappedLogger(prefix, "", defaultLogger);
+    public SimpleLoggerFactory(final @NotNull Logger defaultLogger) {
+        this.defaultLogger = defaultLogger;
     }
 
     @Override
-    public Logger createLogger(final LoggerBuilder builder) {
+    public @NotNull Logger createLogger(final @NotNull String prefix) {
+        return new WrappedLogger(prefix, "", defaultLogger, defaultLogger.getLoggerFormatter());
+    }
+
+    @Override
+    public @NotNull Logger createLogger(final LoggerBuilder builder) {
         return new WrappedLogger(
             builder.getSuffix(),
             builder.getPrefix(),
-            defaultLogger
+            defaultLogger,
+            builder.getFormatter() != null ? builder.getFormatter() : defaultLogger.getLoggerFormatter()
         );
     }
 }

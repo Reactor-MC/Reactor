@@ -6,15 +6,14 @@ import ink.reactor.kernel.event.ListenerPhase;
 import ink.reactor.kernel.logger.Logger;
 import ink.reactor.microkernel.event.executor.ListenerConsumerExecutor;
 import ink.reactor.microkernel.event.loader.MethodListenerLoader;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
-@RequiredArgsConstructor
-@Setter
 public final class SimpleEventBus implements EventBus {
 
     private final Map<Class<?>, EventStorage> eventsStorage;
@@ -23,13 +22,13 @@ public final class SimpleEventBus implements EventBus {
     private final MethodListenerLoader methodListenerLoader;
 
     public SimpleEventBus(final Logger logger) {
-        this.owners = Collections.synchronizedMap(new WeakHashMap<>());
+        this.owners = new ConcurrentHashMap<>();
         this.eventsStorage = new ConcurrentHashMap<>();
         this.methodListenerLoader = new MethodListenerLoader(logger);
     }
 
     @Override
-    public void register(final Object listener) {
+    public void register(final @NotNull Object listener) {
         final Collection<MethodListenerLoader.MethodListener> methodListeners = methodListenerLoader.load(listener);
         if (methodListeners.isEmpty()) {
             return;
@@ -52,12 +51,12 @@ public final class SimpleEventBus implements EventBus {
     }
 
     @Override
-    public <T> void register(final Class<T> eventClass, final Consumer<T> listener) {
+    public <T> void register(final @NotNull Class<T> eventClass, final @NotNull Consumer<T> listener) {
         register(listener, eventClass, ListenerPhase.DEFAULT, new ListenerConsumerExecutor<>(listener));
     }
 
     @Override
-    public void register(final Object listener, final Class<?> eventClass, final ListenerPhase phase, final EventExecutor executor) {
+    public void register(final @NotNull Object listener, final @NotNull Class<?> eventClass, final @NotNull ListenerPhase phase, final @NotNull EventExecutor executor) {
         EventStorage storage = eventsStorage.get(eventClass);
         if (storage == null) {
             storage = new EventStorage();
@@ -72,7 +71,7 @@ public final class SimpleEventBus implements EventBus {
     }
 
     @Override
-    public void unregister(final Object listener) {
+    public void unregister(final @NotNull Object listener) {
         final Collection<RegisteredListener> listeners = owners.remove(listener);
         if (listeners == null) {
             return;
@@ -87,7 +86,7 @@ public final class SimpleEventBus implements EventBus {
     }
 
     @Override
-    public void post(final Object event) {
+    public void post(final @NotNull Object event) {
         if (eventsStorage.isEmpty()) {
             return;
         }
