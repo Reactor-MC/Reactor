@@ -6,4 +6,8 @@ include("kernel:api")
 include("sdk:common")
 include("sdk:bundled")
 
+include("networking:api")
+include("networking:protocol")
+include("networking:internal")
+
 include("launcher:minimal")

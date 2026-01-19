@@ -1,20 +1,23 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.shadow") version "9.3.0"
+    kotlin("jvm") version "2.3.0"
 }
 
 dependencies {
     implementation(project(":kernel:api"))
     implementation(project(":kernel:micro"))
 
-    implementation(kotlin("test"))
-
     implementation(project(":sdk:bundled"))
     implementation("org.jline:jline-terminal:3.30.4")
     implementation("org.jline:jline-reader:3.30.4")
+
+    implementation(project(":networking:api"))
+    implementation(project(":networking:protocol"))
+    implementation(project(":networking:internal"))
 }
 
 tasks.withType<Jar> {
     manifest {
-        attributes["Main-Class"] = "ink.reactor.launcher.ReactorLauncher"
+        attributes["Main-Class"] = "ink.reactor.launcher.MinimalReactorLauncher"
     }
 }

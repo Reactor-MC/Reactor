@@ -53,7 +53,7 @@ logs:
 
   autoFlush:
     enable: true
-    interval: 10
+    interval: 10s
 
   # Automatic compression for old log files
   gzip:

@@ -6,7 +6,7 @@ plugins {
 group = "ink.reactor"
 version = "1.0.0"
 
-subprojects {
+allprojects {
     apply(plugin = "java")
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
