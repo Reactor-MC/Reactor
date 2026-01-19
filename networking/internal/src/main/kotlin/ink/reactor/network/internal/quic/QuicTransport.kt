@@ -1,7 +1,7 @@
-package ink.reactor.network.internal.transport.quic
+package ink.reactor.network.internal.quic
 
 import ink.reactor.kernel.Reactor
-import ink.reactor.network.internal.transport.quic.certificate.RuntimeCertificateProvider
+import ink.reactor.network.internal.quic.certificate.RuntimeCertificateProvider
 import io.netty.bootstrap.Bootstrap
 import io.netty.channel.ChannelFactory
 import io.netty.channel.ChannelFuture

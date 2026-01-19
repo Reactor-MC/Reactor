@@ -35,7 +35,7 @@ class PacketDecoder(private val logger: Logger) : ByteToMessageDecoder() {
         }
 
         if (payloadLength > MAX_PAYLOAD_LENGTH) {
-            logger.warn("Payload length $payloadLength exceeds maximum $DataSize.MAX_PAYLOAD_LENGTH from ${ctx.channel().remoteAddress()}")
+            logger.warn("Payload length $payloadLength exceeds maximum $MAX_PAYLOAD_LENGTH from ${ctx.channel().remoteAddress()}")
             ctx.close()
             return
         }

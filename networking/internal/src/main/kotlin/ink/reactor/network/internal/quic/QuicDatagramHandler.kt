@@ -1,16 +1,13 @@
-package ink.reactor.network.internal.transport.quic
+package ink.reactor.network.internal.quic
 
 import ink.reactor.kernel.Reactor
 import ink.reactor.network.internal.player.PlayerConnectionInitializer
 import io.netty.channel.ChannelHandlerContext
 import io.netty.channel.ChannelInboundHandlerAdapter
 import io.netty.incubator.codec.quic.InsecureQuicTokenHandler
-import io.netty.incubator.codec.quic.QuicChannel
 import io.netty.incubator.codec.quic.QuicCongestionControlAlgorithm
 import io.netty.incubator.codec.quic.QuicServerCodecBuilder
 import io.netty.incubator.codec.quic.QuicSslContext
-import java.security.cert.Certificate
-import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
 
 internal class QuicDatagramHandler(val sslContext: QuicSslContext): ChannelInboundHandlerAdapter() {
