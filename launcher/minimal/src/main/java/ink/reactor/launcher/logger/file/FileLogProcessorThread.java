@@ -20,12 +20,14 @@ public final class FileLogProcessorThread extends Thread {
     public void run() {
         while (running || !fileWriter.getQueue().isEmpty()) {
             fileWriter.processQueue();
-            LockSupport.parkNanos(intervalNanos);
+            if (running) {
+                LockSupport.parkNanos(intervalNanos);
+            }
         }
     }
 
     public void shutdown() {
         this.running = false;
-        this.interrupt();
+        LockSupport.unpark(this);
     }
 }

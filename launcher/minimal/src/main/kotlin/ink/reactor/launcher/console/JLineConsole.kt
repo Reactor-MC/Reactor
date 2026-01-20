@@ -1,6 +1,6 @@
 package ink.reactor.launcher.console
 
-import ink.reactor.launcher.MinimalReactorLauncher
+import ink.reactor.kernel.Reactor
 import org.jline.reader.LineReaderBuilder
 import org.jline.terminal.Terminal
 import org.jline.terminal.TerminalBuilder
@@ -26,7 +26,7 @@ object JLineConsole {
             .build()
 
         val console = Console(terminal, reader)
-        MinimalReactorLauncher.addStopTask{console.stop()}
+        Reactor.addStopTask{console.stop()}
 
         return console
     }

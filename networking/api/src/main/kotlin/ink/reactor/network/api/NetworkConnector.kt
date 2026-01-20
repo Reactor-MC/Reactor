@@ -12,6 +12,7 @@ class NetworkConnector private constructor(
         private var ref: NetworkConnector? = null
 
         val packetHandlers: PacketHandlerStorage get() = connector.packetHandlers
+        val packetsSender: PacketsSender get() = connector.packetsSender
 
         fun init(
             packetHandlers: PacketHandlerStorage,

@@ -15,14 +15,16 @@ public class SimpleLoggerFactory implements LoggerFactory {
 
     @Override
     public @NotNull Logger createLogger(final @NotNull String prefix) {
-        return new WrappedLogger(prefix, "", defaultLogger, defaultLogger.getLoggerFormatter());
+        return new WrappedLogger("", prefix.endsWith(" ") ? prefix : prefix + " ", defaultLogger, defaultLogger.getLoggerFormatter());
     }
 
     @Override
     public @NotNull Logger createLogger(final LoggerBuilder builder) {
+        final String prefix = builder.getPrefix();
+        final String suffix = builder.getSuffix();
         return new WrappedLogger(
-            builder.getSuffix(),
-            builder.getPrefix(),
+            suffix.startsWith(" ") ? suffix : " " + suffix,
+            prefix.endsWith(" ") ? prefix : prefix + " ",
             defaultLogger,
             builder.getFormatter() != null ? builder.getFormatter() : defaultLogger.getLoggerFormatter()
         );

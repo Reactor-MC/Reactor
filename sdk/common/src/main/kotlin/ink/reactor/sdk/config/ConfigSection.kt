@@ -13,6 +13,7 @@ interface ConfigSection {
 
     fun getString(key: String): String? = get(key) as? String
     fun getInt(key: String): Int = (get(key) as? Number)?.toInt() ?: 0
+    fun getInt(key: String, default: Int): Int = (get(key) as? Number)?.toInt() ?: default
     fun getLong(key: String): Long = (get(key) as? Number)?.toLong() ?: 0L
     fun getDouble(key: String): Double = (get(key) as? Number)?.toDouble() ?: 0.0
     fun getBoolean(key: String): Boolean = get(key) as? Boolean ?: false

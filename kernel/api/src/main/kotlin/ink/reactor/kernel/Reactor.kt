@@ -13,6 +13,9 @@ class Reactor private constructor(
 
         private var ref: Reactor? = null
 
+        private val STOP_TASKS: MutableList<() -> Unit> = mutableListOf()
+        fun addStopTask(task: () -> Unit) {STOP_TASKS.add(task)}
+
         val logger: Logger get() = reactor.logger
         val loggerFactory: LoggerFactory get() = reactor.loggerFactory
         val bus: EventBus get() = reactor.globalBus
@@ -26,6 +29,14 @@ class Reactor private constructor(
                 error("Kernel already initialized")
             }
             ref = Reactor(logger, loggerFactory, globalBus)
+
+            Runtime.getRuntime().addShutdownHook(Thread { STOP_TASKS.forEach {
+                runCatching(it)
+                    .onFailure { e ->
+                        System.err.println("Shutdown task failed")
+                        e.printStackTrace()
+                    }
+            }})
         }
 
         private val reactor: Reactor

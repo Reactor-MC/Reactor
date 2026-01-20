@@ -59,6 +59,7 @@ public final class FileWriter {
             flushToDisk();
         } catch (IOException e) {
             System.err.println("Critical error writing to log file");
+            e.printStackTrace(System.err);
         }
     }
 

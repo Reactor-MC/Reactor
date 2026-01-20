@@ -20,7 +20,7 @@ object RuntimeCertificateProvider {
                 return load(path)
             }
 
-            path.createDirectories()
+            path.parent?.createDirectories()
             val ks = generate()
             save(ks, path)
             return ks

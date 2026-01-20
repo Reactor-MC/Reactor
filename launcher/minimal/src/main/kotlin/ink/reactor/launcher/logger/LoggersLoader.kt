@@ -1,7 +1,7 @@
 package ink.reactor.launcher.logger
 
+import ink.reactor.kernel.Reactor
 import ink.reactor.kernel.logger.Logger
-import ink.reactor.launcher.MinimalReactorLauncher
 import ink.reactor.launcher.logger.file.FileGZIPCompressor
 import ink.reactor.launcher.logger.file.FileLogProcessorThread
 import ink.reactor.launcher.logger.file.FileWriter
@@ -76,7 +76,7 @@ class LoggersLoader(
             processor.start()
         }
 
-        MinimalReactorLauncher.addStopTask{processor.shutdown()
+        Reactor.addStopTask{processor.shutdown()
             try {
                 processor.join(5000)
             } catch (_: InterruptedException) {}

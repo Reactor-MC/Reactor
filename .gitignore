@@ -46,3 +46,4 @@ logs
 /tools/code-generator/src/main/resources/combiner/output
 logger.yml
 network.yml
+/certs/**

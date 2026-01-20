@@ -4,12 +4,17 @@ dependencies {
     compileOnly(project(":kernel:api"))
 
     api("org.bouncycastle:bcpkix-jdk18on:1.83")
-    api("io.netty:netty-handler:4.2.9.Final")
-    api("io.netty.incubator:netty-incubator-codec-native-quic:0.0.74.Final")
+
     api("com.github.luben:zstd-jni:1.5.7-6")
+
+    api("io.netty:netty-handler:4.2.9.Final")
+
+    api("io.netty.incubator:netty-incubator-codec-native-quic:0.0.74.Final")
+    api("io.netty.incubator:netty-incubator-codec-native-quic:0.0.74.Final:windows-x86_64")
+    api("io.netty.incubator:netty-incubator-codec-native-quic:0.0.74.Final:linux-x86_64")
+    api("io.netty.incubator:netty-incubator-codec-native-quic:0.0.74.Final:osx-aarch_64")
 
     api("io.netty:netty-transport-native-epoll:4.2.9.Final:linux-x86_64")
     api("io.netty:netty-transport-native-epoll:4.2.9.Final:linux-aarch_64")
-    api("io.netty:netty-transport-native-io_uring:4.2.9.Final:linux-x86_64")
     api("io.netty:netty-transport-native-kqueue:4.2.9.Final:osx-aarch_64")
 }
