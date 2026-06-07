@@ -50,3 +50,7 @@ network.yml
 /plugins/
 /cache/
 plugins.yml
+
+!/launcher/boostrap/src/main/resources/logger.yml
+!/launcher/boostrap/src/main/resources/network.yml
+!/launcher/boostrap/src/main/resources/plugins.yml
